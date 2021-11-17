@@ -4,7 +4,7 @@
         <Header />
 
         <v-main>
-            <HelloWorld />
+            <QuestionCard />
         </v-main>
 
         <Footer />
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import QuestionCard from "./components/QuestionCard.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 
@@ -20,7 +20,7 @@ export default {
     name: "App",
 
     components: {
-        HelloWorld,
+        QuestionCard,
         Header,
         Footer
     },
