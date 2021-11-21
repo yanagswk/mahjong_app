@@ -23,16 +23,22 @@ class CreateMahjongProblemTable extends Migration
             $table->integer('round')->nullable()->comment('巡目');
             $table->integer('dora')->unsigned()->nullable()->comment('ドラ牌のURLのid');
             $table->integer('have_point')->nullable()->comment('持ち展');
-            $table->integer('answer')->unsigned()->comment('答えの牌の画像URLのid');
+            $table->integer('answer_select_one')->unsigned()->comment('選択する答えの牌の画像URL1');
+            $table->integer('answer_select_two')->unsigned()->comment('選択する答えの牌の画像URL2');
+            $table->integer('answer_select_three')->unsigned()->comment('選択する答えの牌の画像URL3');
+            $table->integer('answer_select_fore')->unsigned()->comment('選択する答えの牌の画像URL4');
+            $table->integer('answer_one')->unsigned()->comment('答えの牌の画像URL1');
+            $table->integer('answer_two')->unsigned()->comment('答えの牌の画像URL2');
             $table->string('answer_description')->nullable()->comment('答えの説明');
-            $table->boolean('disabled')->comment('公開するか');
+            $table->boolean('publish')->comment('公開するか');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('station_id')->references('id')->on('station_master')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('direction_id')->references('id')->on('direction_master')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('dora')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('answer')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('answer_one')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('answer_two')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
