@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 // ページコンポーネントをインポートする
-import PhotoList from "./pages/PhotoList.vue";
+import QuestionList from "./pages/QuestionList.vue";
 import Login from "./pages/Login.vue";
 
 // VueRouterプラグインを使用する
@@ -13,7 +13,7 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: "/",
-        component: PhotoList,
+        component: QuestionList,
     },
     {
         path: "/login",

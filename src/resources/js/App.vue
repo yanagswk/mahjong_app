@@ -4,7 +4,7 @@
         <Header />
 
         <v-main>
-            <QuestionCard />
+            <RouterView />
         </v-main>
 
         <Footer />
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import QuestionCard from "./components/QuestionCard.vue";
+import QuestionList from "./pages/QuestionList.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 
@@ -20,7 +20,7 @@ export default {
     name: "App",
 
     components: {
-        QuestionCard,
+        QuestionList,
         Header,
         Footer
     },
