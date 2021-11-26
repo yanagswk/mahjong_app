@@ -1,10 +1,11 @@
 <template>
-    <v-row class="text-center">
-        <v-card width="900px" class="mx-auto mt-5">
+    <!-- <v-row class="text-center"> -->
+    <v-row>
+        <v-card width="1000px" class="mx-auto mt-5">
             <!-- タイトルを表示します。 -->
-            <v-card-title>タイトルuu</v-card-title>
+            <v-card-title class="justify-center">タイトルuu</v-card-title>
             <!-- サブタイトルを表示します。 -->
-            <v-card-subtitle>サブタイトル</v-card-subtitle>
+            <v-card-subtitle class="justify-center">サブタイトル</v-card-subtitle>
             <!-- 本文を表示します。 -->
             <v-card-text>本文</v-card-text>
         </v-card>

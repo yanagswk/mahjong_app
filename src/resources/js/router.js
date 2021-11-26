@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 // ページコンポーネントをインポートする
 import QuestionList from "./pages/QuestionList.vue";
 import Login from "./pages/Login.vue";
+import PostQuestion from "./pages/PostQuestion.vue";
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -19,6 +20,10 @@ const routes = [
         path: "/login",
         component: Login,
     },
+    {
+        path: "/post_question",
+        component: PostQuestion
+    }
 ];
 
 // VueRouterインスタンスを作成する
