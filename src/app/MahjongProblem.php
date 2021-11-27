@@ -69,15 +69,15 @@ class MahjongProblem extends Model
             'answer_two.mahjong_tiles as answer_two',
             'mahjong_problem.answer_description'
         ])
-        ->join('station_master', 'station_master.id', '=', 'mahjong_problem.station_id')
-        ->join('direction_master', 'direction_master.id', '=', 'mahjong_problem.direction_id')
-        ->join('mahjong_tiles_master as dora', 'dora.id', 'mahjong_problem.dora')
-        ->join('mahjong_tiles_master as answer_select_one', 'answer_select_one.id', 'mahjong_problem.answer_select_one')
-        ->join('mahjong_tiles_master as answer_select_two', 'answer_select_two.id', 'mahjong_problem.answer_select_two')
-        ->join('mahjong_tiles_master as answer_select_three', 'answer_select_three.id', 'mahjong_problem.answer_select_three')
-        ->join('mahjong_tiles_master as answer_select_fore', 'answer_select_fore.id', 'mahjong_problem.answer_select_fore')
-        ->join('mahjong_tiles_master as answer_one', 'answer_one.id', 'mahjong_problem.answer_one')
-        ->join('mahjong_tiles_master as answer_two', 'answer_two.id', 'mahjong_problem.answer_two');
+        ->leftJoin('station_master', 'station_master.id', '=', 'mahjong_problem.station_id')
+        ->leftJoin('direction_master', 'direction_master.id', '=', 'mahjong_problem.direction_id')
+        ->leftJoin('mahjong_tiles_master as dora', 'dora.id', 'mahjong_problem.dora')
+        ->leftJoin('mahjong_tiles_master as answer_select_one', 'answer_select_one.id', 'mahjong_problem.answer_select_one')
+        ->leftJoin('mahjong_tiles_master as answer_select_two', 'answer_select_two.id', 'mahjong_problem.answer_select_two')
+        ->leftJoin('mahjong_tiles_master as answer_select_three', 'answer_select_three.id', 'mahjong_problem.answer_select_three')
+        ->leftJoin('mahjong_tiles_master as answer_select_fore', 'answer_select_fore.id', 'mahjong_problem.answer_select_fore')
+        ->leftJoin('mahjong_tiles_master as answer_one', 'answer_one.id', 'mahjong_problem.answer_one')
+        ->leftJoin('mahjong_tiles_master as answer_two', 'answer_two.id', 'mahjong_problem.answer_two');
     }
 
     /**
