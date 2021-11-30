@@ -36,10 +36,6 @@ class MahjongProblem extends Model
         'round',
         'dora',
         'have_point',
-        'select1',
-        'select2',
-        'select3',
-        'select4',
         'answer1',
         'answer2',
         'description',
@@ -88,10 +84,6 @@ class MahjongProblem extends Model
             'mahjong_problem.round',
             'dora.mahjong_tiles as dora',
             'mahjong_problem.have_point',
-            'select1.mahjong_tiles as select1',
-            'select2.mahjong_tiles as select2',
-            'select3.mahjong_tiles as select3',
-            'select4.mahjong_tiles as select4',
             'answer1.mahjong_tiles as answer1',
             'answer2.mahjong_tiles as answer2',
             'mahjong_problem.description'
@@ -112,10 +104,6 @@ class MahjongProblem extends Model
         ->leftJoin('station_master', 'station_master.id', '=', 'mahjong_problem.station_id')
         ->leftJoin('direction_master', 'direction_master.id', '=', 'mahjong_problem.direction_id')
         ->leftJoin('mahjong_tiles_master as dora', 'dora.id', 'mahjong_problem.dora')
-        ->leftJoin('mahjong_tiles_master as select1', 'select1.id', 'mahjong_problem.select1')
-        ->leftJoin('mahjong_tiles_master as select2', 'select2.id', 'mahjong_problem.select2')
-        ->leftJoin('mahjong_tiles_master as select3', 'select3.id', 'mahjong_problem.select3')
-        ->leftJoin('mahjong_tiles_master as select4', 'select4.id', 'mahjong_problem.select4')
         ->leftJoin('mahjong_tiles_master as answer1', 'answer1.id', 'mahjong_problem.answer1')
         ->leftJoin('mahjong_tiles_master as answer2', 'answer2.id', 'mahjong_problem.answer2');
     }

@@ -35,10 +35,6 @@ class CreateMahjongProblemTable extends Migration
             $table->integer('round')->nullable()->comment('巡目');
             $table->integer('dora')->unsigned()->nullable()->comment('ドラ牌');
             $table->integer('have_point')->nullable()->comment('持ち点');
-            $table->integer('select1')->unsigned()->comment('選択した牌1');
-            $table->integer('select2')->unsigned()->comment('選択した牌2');
-            $table->integer('select3')->unsigned()->comment('選択した牌3');
-            $table->integer('select4')->unsigned()->comment('選択した牌4');
             $table->integer('answer1')->unsigned()->comment('答えの牌1');
             $table->integer('answer2')->unsigned()->comment('答えの牌2');
             $table->string('description')->nullable()->comment('答えの説明');
@@ -62,10 +58,6 @@ class CreateMahjongProblemTable extends Migration
             $table->foreign('station_id')->references('id')->on('station_master')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('direction_id')->references('id')->on('direction_master')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('dora')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('select1')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('select2')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('select3')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('select4')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('answer1')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('answer2')->references('id')->on('mahjong_tiles_master')->onUpdate('CASCADE')->onDelete('CASCADE');
         });

@@ -29,21 +29,24 @@
 
             <div class="question-tail-list">
                 <div v-for="(tiles, index) in item.problem_tiles" :key="index" class="question-tail">
+                    <!-- <v-btn> -->
+                    <!-- FIXME: ボタンこうしたい　https://vuetifyjs.com/ja/components/cards/#section-4f7f304465b9  -->
                     <v-img
                         :src="tiles"
                         max-height="70"
                         max-width="50"
+                        class="image-mouse"
+                        @click="click_select(tiles)"
                     ></v-img>
+                    <!-- </v-btn> -->
                 </div>
             </div>
 
             <!-- https://yacchi-engineer.com/?p=1465 -->
-            <v-card width="300px">
+            <!-- <v-card width="300px">
                 <v-container grid-list-xs>
                     <v-row>
                         <v-col md="3" v-for="(key, index) in item.select" :key="index">
-                            <!-- <v-btn> -->
-                                <!-- FIXME: ボタンこうしたい　https://vuetifyjs.com/ja/components/cards/#section-4f7f304465b9  -->
                             <v-img
                                 :src="key"
                                 max-height="70"
@@ -51,11 +54,10 @@
                                 class="image-mouse"
                                 @click="click_select(key)"
                             ></v-img>
-                            <!-- </v-btn> -->
                         </v-col>
                     </v-row>
                 </v-container>
-            </v-card>
+            </v-card> -->
 
             <div v-show="isVisible">
                 <v-card-text>選択した牌 :

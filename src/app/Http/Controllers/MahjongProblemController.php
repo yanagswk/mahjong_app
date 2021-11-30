@@ -39,25 +39,16 @@ class MahjongProblemController extends Controller
                     unset($problem_list[$key][$key2]);
                 }
 
-                if (strpos($key2, 'select') !== false) {
-                    \Log::debug('aa');
-                    $select_list[] = $problem_list[$key][$key2];
-                    unset($problem_list[$key][$key2]);
-                }
-
                 if (strpos($key2, 'answer') !== false) {
                     $answer_list[] = $problem_list[$key][$key2];
                     unset($problem_list[$key][$key2]);
                 }
             }
             $problem_list[$key]['problem_tiles'] = $problem_tiles_list;
-            $problem_list[$key]['select'] = $select_list;
             $problem_list[$key]['answer'] = $answer_list;
             unset($problem_tiles_list);
-            unset($select_list);
             unset($answer_list);
         }
-
 
         return response()->json([
             'problem_list' => $problem_list,
