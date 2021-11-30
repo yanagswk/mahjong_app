@@ -2,7 +2,6 @@
     <!-- <v-row class="text-center"> -->
     <v-row>
         <v-card elevation="5" outlined width="1000px" class="mx-auto mt-5">
-
             <v-card-title class="card-title-list">
                 <div class="question-number">
                     問題 : {{ item.id }}
@@ -25,59 +24,34 @@
                 </div>
             </v-card-title>
 
-
             <v-divider class="mx-3"></v-divider>
             <v-card-text>{{ item.problem_description }}</v-card-text>
-            <v-img
-                :src="item.problem_image_url"
-                max-height="300"
-                max-width="500"
-            ></v-img>
+
+            <div class="question-tail-list">
+                <div v-for="(tiles, index) in item.problem_tiles" :key="index" class="question-tail">
+                    <v-img
+                        :src="tiles"
+                        max-height="70"
+                        max-width="50"
+                    ></v-img>
+                </div>
+            </div>
 
             <!-- https://yacchi-engineer.com/?p=1465 -->
-            <v-card width="300px" style="margin-top:10px">
+            <v-card width="300px">
                 <v-container grid-list-xs>
                     <v-row>
-                        <!-- FIXME: for文回したい -->
-                        <!-- <v-col md="3" v-for="(answer, index) in answer_list" :key="index"> -->
-                        <v-col md="3">
+                        <v-col md="3" v-for="(key, index) in item.select" :key="index">
                             <!-- <v-btn> -->
                                 <!-- FIXME: ボタンこうしたい　https://vuetifyjs.com/ja/components/cards/#section-4f7f304465b9  -->
                             <v-img
-                                :src="item.answer_select_one"
+                                :src="key"
                                 max-height="70"
                                 max-width="50"
                                 class="image-mouse"
-                                @click="click_select(item.answer_select_one)"
+                                @click="click_select(key)"
                             ></v-img>
                             <!-- </v-btn> -->
-                        </v-col>
-                        <v-col md="3">
-                            <v-img
-                                :src="item.answer_select_two"
-                                max-height="70"
-                                max-width="50"
-                                class="image-mouse"
-                                @click="click_select(item.answer_select_two)"
-                            ></v-img>
-                        </v-col>
-                        <v-col md="3">
-                            <v-img
-                                :src="item.answer_select_three"
-                                max-height="70"
-                                max-width="50"
-                                class="image-mouse"
-                                @click="click_select(item.answer_select_three)"
-                            ></v-img>
-                        </v-col>
-                        <v-col md="3">
-                            <v-img
-                                :src="item.answer_select_fore"
-                                max-height="70"
-                                max-width="50"
-                                class="image-mouse"
-                                @click="click_select(item.answer_select_fore)"
-                            ></v-img>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -116,15 +90,6 @@
 export default {
     data() {
         return {
-            // image_src: require("/Users/yanagisawa/src/myapp/mahjong_app/src/public/image/question01.png"),
-            // image_src: require(this.item.problem_image_url),
-            image_src: require("../../../public/image/question01.png"),
-            // answer_list: [
-            //     {answer_img : require("../../../public/image/hai/two_man.png")},
-            //     {answer_img : require("../../../public/image/hai/three_man.png")},
-            //     {answer_img : require("../../../public/image/hai/four_sou.png")},
-            //     {answer_img : require("../../../public/image/hai/five_sou.png")},
-            // ],
             isVisible: false,
             select_img: '',
         }
@@ -171,5 +136,13 @@ export default {
 .question-number {
     padding-right: 10px;
 }
+.question-tail {
+    float: left;
+}
+.question-tail-list {
+    overflow:  auto;
+    margin-bottom: 10px;
+}
+
 
 </style>

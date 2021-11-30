@@ -35,3 +35,5 @@ const router = new VueRouter({
 // VueRouterインスタンスをエクスポートする
 // app.jsでインポートするため
 export default router;
+
+// http://127.0.0.1:80/storage/five_sou.png

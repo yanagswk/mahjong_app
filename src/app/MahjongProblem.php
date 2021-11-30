@@ -17,15 +17,32 @@ class MahjongProblem extends Model
 
     protected $fillable = [
         'user_id',
-        'problem_image_url',
+        'problem_tiles1',
+        'problem_tiles2',
+        'problem_tiles3',
+        'problem_tiles4',
+        'problem_tiles5',
+        'problem_tiles6',
+        'problem_tiles7',
+        'problem_tiles8',
+        'problem_tiles9',
+        'problem_tiles10',
+        'problem_tiles11',
+        'problem_tiles12',
+        'problem_tiles13',
         'problem_description',
         'station_id',
         'direction_id',
         'round',
         'dora',
         'have_point',
-        'answer',
-        'answer_description',
+        'select1',
+        'select2',
+        'select3',
+        'select4',
+        'answer1',
+        'answer2',
+        'description',
         'publish',
     ];
 
@@ -53,31 +70,54 @@ class MahjongProblem extends Model
         return $query->select([
             'mahjong_problem.id',
             'mahjong_problem.user_id',
-            'mahjong_problem.problem_image_url',
-            'mahjong_problem.problem_description',
+            'problem_tiles1.mahjong_tiles as problem_tiles1',
+            'problem_tiles2.mahjong_tiles as problem_tiles2',
+            'problem_tiles3.mahjong_tiles as problem_tiles3',
+            'problem_tiles4.mahjong_tiles as problem_tiles4',
+            'problem_tiles5.mahjong_tiles as problem_tiles5',
+            'problem_tiles6.mahjong_tiles as problem_tiles6',
+            'problem_tiles7.mahjong_tiles as problem_tiles7',
+            'problem_tiles8.mahjong_tiles as problem_tiles8',
+            'problem_tiles9.mahjong_tiles as problem_tiles9',
+            'problem_tiles10.mahjong_tiles as problem_tiles10',
+            'problem_tiles11.mahjong_tiles as problem_tiles11',
+            'problem_tiles12.mahjong_tiles as problem_tiles12',
+            'problem_tiles13.mahjong_tiles as problem_tiles13',
             'station_master.station',
             'direction_master.direction',
             'mahjong_problem.round',
             'dora.mahjong_tiles as dora',
             'mahjong_problem.have_point',
-            'answer_select_one.mahjong_tiles as answer_select_one',
-            'answer_select_two.mahjong_tiles as answer_select_two',
-            'answer_select_three.mahjong_tiles as answer_select_three',
-            'answer_select_fore.mahjong_tiles as answer_select_fore',
-            'answer_select_fore.mahjong_tiles as answer_select_fore',
-            'answer_one.mahjong_tiles as answer_one',
-            'answer_two.mahjong_tiles as answer_two',
-            'mahjong_problem.answer_description'
+            'select1.mahjong_tiles as select1',
+            'select2.mahjong_tiles as select2',
+            'select3.mahjong_tiles as select3',
+            'select4.mahjong_tiles as select4',
+            'answer1.mahjong_tiles as answer1',
+            'answer2.mahjong_tiles as answer2',
+            'mahjong_problem.description'
         ])
+        ->leftJoin('mahjong_tiles_master as problem_tiles1', 'problem_tiles1.id', 'mahjong_problem.problem_tiles1')
+        ->leftJoin('mahjong_tiles_master as problem_tiles2', 'problem_tiles2.id', 'mahjong_problem.problem_tiles2')
+        ->leftJoin('mahjong_tiles_master as problem_tiles3', 'problem_tiles3.id', 'mahjong_problem.problem_tiles3')
+        ->leftJoin('mahjong_tiles_master as problem_tiles4', 'problem_tiles4.id', 'mahjong_problem.problem_tiles4')
+        ->leftJoin('mahjong_tiles_master as problem_tiles5', 'problem_tiles5.id', 'mahjong_problem.problem_tiles5')
+        ->leftJoin('mahjong_tiles_master as problem_tiles6', 'problem_tiles6.id', 'mahjong_problem.problem_tiles6')
+        ->leftJoin('mahjong_tiles_master as problem_tiles7', 'problem_tiles7.id', 'mahjong_problem.problem_tiles7')
+        ->leftJoin('mahjong_tiles_master as problem_tiles8', 'problem_tiles8.id', 'mahjong_problem.problem_tiles8')
+        ->leftJoin('mahjong_tiles_master as problem_tiles9', 'problem_tiles9.id', 'mahjong_problem.problem_tiles9')
+        ->leftJoin('mahjong_tiles_master as problem_tiles10', 'problem_tiles10.id', 'mahjong_problem.problem_tiles10')
+        ->leftJoin('mahjong_tiles_master as problem_tiles11', 'problem_tiles11.id', 'mahjong_problem.problem_tiles11')
+        ->leftJoin('mahjong_tiles_master as problem_tiles12', 'problem_tiles12.id', 'mahjong_problem.problem_tiles12')
+        ->leftJoin('mahjong_tiles_master as problem_tiles13', 'problem_tiles13.id', 'mahjong_problem.problem_tiles13')
         ->leftJoin('station_master', 'station_master.id', '=', 'mahjong_problem.station_id')
         ->leftJoin('direction_master', 'direction_master.id', '=', 'mahjong_problem.direction_id')
         ->leftJoin('mahjong_tiles_master as dora', 'dora.id', 'mahjong_problem.dora')
-        ->leftJoin('mahjong_tiles_master as answer_select_one', 'answer_select_one.id', 'mahjong_problem.answer_select_one')
-        ->leftJoin('mahjong_tiles_master as answer_select_two', 'answer_select_two.id', 'mahjong_problem.answer_select_two')
-        ->leftJoin('mahjong_tiles_master as answer_select_three', 'answer_select_three.id', 'mahjong_problem.answer_select_three')
-        ->leftJoin('mahjong_tiles_master as answer_select_fore', 'answer_select_fore.id', 'mahjong_problem.answer_select_fore')
-        ->leftJoin('mahjong_tiles_master as answer_one', 'answer_one.id', 'mahjong_problem.answer_one')
-        ->leftJoin('mahjong_tiles_master as answer_two', 'answer_two.id', 'mahjong_problem.answer_two');
+        ->leftJoin('mahjong_tiles_master as select1', 'select1.id', 'mahjong_problem.select1')
+        ->leftJoin('mahjong_tiles_master as select2', 'select2.id', 'mahjong_problem.select2')
+        ->leftJoin('mahjong_tiles_master as select3', 'select3.id', 'mahjong_problem.select3')
+        ->leftJoin('mahjong_tiles_master as select4', 'select4.id', 'mahjong_problem.select4')
+        ->leftJoin('mahjong_tiles_master as answer1', 'answer1.id', 'mahjong_problem.answer1')
+        ->leftJoin('mahjong_tiles_master as answer2', 'answer2.id', 'mahjong_problem.answer2');
     }
 
     /**
