@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\MahjongProblem;
+use App\MahjongTilesMaster;
+use App\UserAnswer;
+use Illuminate\Support\Facades\DB;
 
 class MahjongProblemController extends Controller
 {
@@ -53,5 +56,42 @@ class MahjongProblemController extends Controller
         return response()->json([
             'problem_list' => $problem_list,
         ], 200);
+    }
+
+
+    /**
+     * 問題の回答を登録
+     */
+    public function setProblemAnswer(Request $request) {
+        $answer = $request->only(['question_number', 'select_img', 'comment']);
+
+        try {
+            $response = DB::transaction(function () use($answer) {
+
+                $user_answer = new UserAnswer();
+                $mahjong_tiles_id = MahjongTilesMaster::select(['id'])
+                                    ->where('mahjong_tiles', $answer['select_img'])
+                                    ->first()
+                                    ->toArray();
+
+                $data = [
+                    'mahjong_problem_id' => $answer['question_number'],
+                    'select_tile' => $mahjong_tiles_id['id'],
+                    'comment' => $answer['comment']
+                ];
+
+                $user_answer->fill($data)->save();
+
+                return [
+                    'question_number' => $answer['question_number'],
+                    'select_img' => $answer['select_img'],
+                    'comment' => $answer['comment'],
+                ];
+            });
+        } catch (\Exception $error) {
+            return response($error, 404);
+        }
+
+        return response($response, 200);
     }
 }

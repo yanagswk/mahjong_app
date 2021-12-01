@@ -62,7 +62,7 @@
             <div v-show="isVisible">
                 <v-card-text>選択した牌 :
                     <v-img
-                        :src="select_img"
+                        :src="selectImg"
                         max-height="30"
                         max-width="20"
                         class="select-hei"
@@ -74,13 +74,18 @@
                     solo
                     label="コメント"
                     elevation="5"
+                    v-model="userComment"
                 ></v-textarea>
+
+                <v-card-text>{{ userComment }}</v-card-text>
+
                 <v-card-actions>
                     <v-btn
                         block
                         elevation="2"
-                        @click="reserve"
-                    >回答する</v-btn>
+                        @click="post_answer"
+                    >回答する
+                    </v-btn>
                 </v-card-actions>
             </div>
 
@@ -93,7 +98,8 @@ export default {
     data() {
         return {
             isVisible: false,
-            select_img: '',
+            selectImg: '',
+            userComment: '',
         }
     },
     props: {
@@ -103,16 +109,34 @@ export default {
         },
     },
     methods: {
+        /**
+         * 回答を選択
+         * @param img string 選択肢した画像
+         */
         click_select(img) {
-            console.log(img);
             if (!this.isVisible) {
                 this.isVisible = true;
             }
-            this.select_img = img;
+            this.selectImg = img;
+        },
+        /**
+         * 回答を送信
+         */
+        async post_answer() {
+            // 問題のid、選択肢した牌、コメント、ユーザー情報
+            const response = await axios.post("/api/post_answer", {
+                question_number: this.item.id,
+                select_img: this.selectImg,
+                comment: this.userComment
+            });
+
+            if (response.status !== 200) {
+                console.log('更新に失敗しました。');
+                return false;
+            }
+
+            console.log('更新に成功しました。');
         }
-    },
-    created() {
-        console.log(this.item.problem_image_url);
     },
 };
 // <!-- src="https://cdn.vuetifyjs.com/images/cards/cooking.png" -->
