@@ -1,10 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-// ページコンポーネントをインポートする
 import QuestionList from "./pages/QuestionList.vue";
 import Login from "./pages/Login.vue";
 import PostQuestion from "./pages/PostQuestion.vue";
+import QuestionAnswer from "./pages/QuestionAnswer.vue";
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -23,6 +23,11 @@ const routes = [
     {
         path: "/post_question",
         component: PostQuestion
+    },
+    {
+        path: "/question_answer/:id",
+        component: QuestionAnswer,
+        props: true
     }
 ];
 

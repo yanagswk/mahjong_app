@@ -71,34 +71,98 @@ class MahjongProblemSeeder extends Seeder
         // ]);
 
         // 麻雀問題
-        DB::table('mahjong_problem')->insert([
+        // DB::table('mahjong_problem')->insert([
+        //     [
+        //         'problem_tiles1' => '2',
+        //         'problem_tiles2' => '3',
+        //         'problem_tiles3' => '8',
+        //         'problem_tiles4' => '9',
+        //         'problem_tiles5' => '16',
+        //         'problem_tiles6' => '17',
+        //         'problem_tiles7' => '22',
+        //         'problem_tiles8' => '23',
+        //         'problem_tiles9' => '24',
+        //         'problem_tiles10' => '24',
+        //         'problem_tiles11' => '25',
+        //         'problem_tiles12' => '36',
+        //         'problem_tiles13' => '36',
+        //         'problem_description' => '何をきるでしょう？',
+        //         'station_id' => 1,
+        //         'direction_id' => 2,
+        //         'round' => 4,
+        //         'dora' => 1,
+        //         'have_point' => 25000,
+        //         'answer1' => 2,
+        //         'answer2' => 5,
+        //         'description' => '2萬と3萬か、4索と5索のどちらかで迷うと思うが、頭がない時は連続した牌が強いので、2萬か3萬のどちらかを切るのが正解です.',
+        //         'publish' => true,
+        //         'created_at' => new Carbon('now'),
+        //         'updated_at' => new Carbon('now'),
+        //     ]
+        // ]);
+
+        // 回答
+        DB::table('user_answer')->insert([
             [
-                'problem_tiles1' => '2',
-                'problem_tiles2' => '3',
-                'problem_tiles3' => '8',
-                'problem_tiles4' => '9',
-                'problem_tiles5' => '16',
-                'problem_tiles6' => '17',
-                'problem_tiles7' => '22',
-                'problem_tiles8' => '23',
-                'problem_tiles9' => '24',
-                'problem_tiles10' => '24',
-                'problem_tiles11' => '25',
-                'problem_tiles12' => '36',
-                'problem_tiles13' => '36',
-                'problem_description' => '何をきるでしょう？',
-                'station_id' => 1,
-                'direction_id' => 2,
-                'round' => 4,
-                'dora' => 1,
-                'have_point' => 25000,
-                'answer1' => 2,
-                'answer2' => 5,
-                'description' => '2萬と3萬か、4索と5索のどちらかで迷うと思うが、頭がない時は連続した牌が強いので、2萬か3萬のどちらかを切るのが正解です.',
-                'publish' => true,
+                'mahjong_problem_id' => 1,
+                'select_tile' => 3,
                 'created_at' => new Carbon('now'),
                 'updated_at' => new Carbon('now'),
-            ]
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 3,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 2,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 3,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 3,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 2,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 2,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 2,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 2,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
+            [
+                'mahjong_problem_id' => 1,
+                'select_tile' => 17,
+                'created_at' => new Carbon('now'),
+                'updated_at' => new Carbon('now'),
+            ],
         ]);
     }
 }

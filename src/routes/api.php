@@ -18,8 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-// 問題一覧取得
+// 問題一覧取得api
 Route::get('problem_list', 'MahjongProblemController@getProblemList');
 
 // 回答送信api
 Route::post('post_answer', 'MahjongProblemController@setProblemAnswer');
+
+// 回答取得api
+Route::get('answer_result', 'MahjongProblemController@getAnswerResult');

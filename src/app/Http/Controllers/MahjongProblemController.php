@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\MahjongProblem;
 use App\MahjongTilesMaster;
+use App\Module\MahjongProblemModule;
 use App\UserAnswer;
 use Illuminate\Support\Facades\DB;
 
@@ -29,32 +30,17 @@ class MahjongProblemController extends Controller
             ], 404);
         }
 
-        // TODO: ここの処理変えたい problem_tilesなどは中間カラム持たせる？
-        foreach ($problem_list as $key => $problem) {
-            foreach ($problem as $key2 => $problem2) {
-                // TODO: 仮データ 消す予定
-                if ($key2 == 'user_id') {
-                    $problem_list[$key][$key2] = 111111;
-                }
+        $mahjong_problem = new MahjongProblemModule();
 
-                if (strpos($key2, 'problem_tiles') !== false) {
-                    $problem_tiles_list[] = $problem_list[$key][$key2];
-                    unset($problem_list[$key][$key2]);
-                }
-
-                if (strpos($key2, 'answer') !== false) {
-                    $answer_list[] = $problem_list[$key][$key2];
-                    unset($problem_list[$key][$key2]);
-                }
-            }
-            $problem_list[$key]['problem_tiles'] = $problem_tiles_list;
-            $problem_list[$key]['answer'] = $answer_list;
-            unset($problem_tiles_list);
-            unset($answer_list);
+        $hierarchy_down_problem_list = [];
+        foreach ($problem_list as $index => $problem) {
+            // TODO: ここの処理変えたい problem_tilesなどは中間カラム持たせる？
+            $result = $mahjong_problem->hierarchyDown($problem);
+            $hierarchy_down_problem_list[] = $result;
         }
 
         return response()->json([
-            'problem_list' => $problem_list,
+            'problem_list' => $hierarchy_down_problem_list,
         ], 200);
     }
 
@@ -62,17 +48,18 @@ class MahjongProblemController extends Controller
     /**
      * 問題の回答を登録
      */
-    public function setProblemAnswer(Request $request) {
+    public function setProblemAnswer(Request $request)
+    {
         $answer = $request->only(['question_number', 'select_img', 'comment']);
 
         try {
-            $response = DB::transaction(function () use($answer) {
+            $response = DB::transaction(function () use ($answer) {
 
                 $user_answer = new UserAnswer();
                 $mahjong_tiles_id = MahjongTilesMaster::select(['id'])
-                                    ->where('mahjong_tiles', $answer['select_img'])
-                                    ->first()
-                                    ->toArray();
+                    ->where('mahjong_tiles', $answer['select_img'])
+                    ->first()
+                    ->toArray();
 
                 $data = [
                     'mahjong_problem_id' => $answer['question_number'],
@@ -91,7 +78,44 @@ class MahjongProblemController extends Controller
         } catch (\Exception $error) {
             return response($error, 404);
         }
-
         return response($response, 200);
+    }
+
+
+    /**
+     * 問題の回答取得
+     * @param Request question_id 問題id
+     */
+    public function getAnswerResult(Request $request)
+    {
+        $question_id = $request->input('question_id');
+
+        // TODO: answerRateで割合出したけど、phpでやる場合のコードも書いてみる
+        $user_answer_rate = UserAnswer::answerRate($question_id)
+            ->get()
+            ->toArray();
+
+        $mahjong_problem = MahjongProblem::where('mahjong_problem.id', $question_id)
+            ->problemList()
+            ->first()
+            ->toArray();
+
+        $mahjong_problem_module = new MahjongProblemModule();
+
+        // TODO: ここの処理変えたい problem_tilesなどは中間カラム持たせる？
+        $problem = $mahjong_problem_module->hierarchyDown($mahjong_problem);
+
+        $result = $mahjong_problem_module->chkAnswerTileInProblem($problem['problem_tiles'], $user_answer_rate);
+
+        if (!$result) {
+            return response()->json([
+                'status' => 'error'
+            ], 404);
+        }
+
+        return response()->json([
+            'problem' => $problem,
+            'user_answer_rate' => $user_answer_rate
+        ], 200);
     }
 }

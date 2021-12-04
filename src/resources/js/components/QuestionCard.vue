@@ -59,6 +59,15 @@
                 </v-container>
             </v-card> -->
 
+            <v-card-text>
+                <v-btn
+                    :to="`question_answer/${this.item.id}`"
+                    small
+                >
+                    問題の回答・集計結果を見る
+                </v-btn>
+            </v-card-text>
+
             <div v-show="isVisible">
                 <v-card-text>選択した牌 :
                     <v-img
@@ -68,25 +77,29 @@
                         class="select-hei"
                     ></v-img>
                 </v-card-text>
-                <!-- FIXME: textareaの幅調整したい -->
-                <v-textarea
-                    width="500px"
-                    solo
-                    label="コメント"
-                    elevation="5"
-                    v-model="userComment"
-                ></v-textarea>
 
-                <v-card-text>{{ userComment }}</v-card-text>
+                <v-form @submit.prevent="answer_submit">
+                    <!-- FIXME: textareaの幅調整したい -->
+                    <v-textarea
+                        width="500px"
+                        solo
+                        label="コメント"
+                        elevation="5"
+                        v-model="userComment"
+                    ></v-textarea>
 
-                <v-card-actions>
-                    <v-btn
-                        block
-                        elevation="2"
-                        @click="post_answer"
-                    >回答する
-                    </v-btn>
-                </v-card-actions>
+                    <v-card-text>{{ userComment }}</v-card-text>
+
+                    <v-card-actions>
+                        <v-btn
+                            type="submit"
+                            block
+                            elevation="2"
+                        >回答する
+                        </v-btn>
+                    </v-card-actions>
+                </v-form>
+
             </div>
 
         </v-card>
@@ -122,7 +135,7 @@ export default {
         /**
          * 回答を送信
          */
-        async post_answer() {
+        async answer_submit() {
             // 問題のid、選択肢した牌、コメント、ユーザー情報
             const response = await axios.post("/api/post_answer", {
                 question_number: this.item.id,
@@ -135,7 +148,13 @@ export default {
                 return false;
             }
 
-            console.log('更新に成功しました。');
+            // 問題の回答ページへ遷移
+            this.$router.push(`question_answer/${this.item.id}`);
+            // this.$router.push({
+            //     // name: `question_answer/${this.item.id}`,
+            //     name: "/question_answer/:id",
+            //     params: {item: this.item}
+            // });
         }
     },
 };
@@ -169,6 +188,5 @@ export default {
     overflow:  auto;
     margin-bottom: 10px;
 }
-
 
 </style>
