@@ -91,9 +91,11 @@ class MahjongProblemController extends Controller
         $question_id = $request->input('question_id');
 
         // TODO: answerRateで割合出したけど、phpでやる場合のコードも書いてみる
-        $user_answer_rate = UserAnswer::answerRate($question_id)
+        $user_answer_list = UserAnswer::answerRate($question_id)
             ->get()
             ->toArray();
+
+
 
         $mahjong_problem = MahjongProblem::where('mahjong_problem.id', $question_id)
             ->problemList()
@@ -102,10 +104,16 @@ class MahjongProblemController extends Controller
 
         $mahjong_problem_module = new MahjongProblemModule();
 
+        // TODO: ランキングのキーを追加する前に、一応並び順をチェックしとく
+        $user_answer_rank_list = $mahjong_problem_module->setAnswerRanking($user_answer_list);
+
+        // 回答数を求める
+        $answer_count = $mahjong_problem_module->sumAnswerCount($user_answer_rank_list);
+
         // TODO: ここの処理変えたい problem_tilesなどは中間カラム持たせる？
         $problem = $mahjong_problem_module->hierarchyDown($mahjong_problem);
 
-        $result = $mahjong_problem_module->chkAnswerTileInProblem($problem['problem_tiles'], $user_answer_rate);
+        $result = $mahjong_problem_module->chkAnswerTileInProblem($problem['problem_tiles'], $user_answer_list);
 
         if (!$result) {
             return response()->json([
@@ -115,7 +123,8 @@ class MahjongProblemController extends Controller
 
         return response()->json([
             'problem' => $problem,
-            'user_answer_rate' => $user_answer_rate
+            'user_answer_list' => $user_answer_rank_list,
+            'answer_count' => $answer_count
         ], 200);
     }
 }

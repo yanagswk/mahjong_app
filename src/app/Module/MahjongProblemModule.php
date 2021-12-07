@@ -53,6 +53,40 @@ class MahjongProblemModule
         }
         return true;
     }
+
+
+    /**
+     * ランキングのキーを追加する
+     *
+     * @param array $answer_list
+     */
+    public function setAnswerRanking(array $answer_list): array
+    {
+        if (empty($answer_list)) {
+            return [];
+        }
+        foreach ($answer_list as $index => $answer) {
+            $answer_list[$index] = array_merge($answer_list[$index], ['ranking' => $index + 1]);
+        }
+        return $answer_list;
+    }
+
+
+    /**
+     * ユーザの回答数を求める
+     *
+     * @param array $answer_list 回答リスト
+     * @param int 回答数
+     */
+    public function sumAnswerCount(array $answer_list): int
+    {
+        if (empty($answer_list)) {
+            return [];
+        }
+        $answer_count = array_column($answer_list, 'answer_count');
+        $answer_sum = array_sum($answer_count);
+        return $answer_sum;
+    }
 }
 
 ?>
