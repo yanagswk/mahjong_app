@@ -11,13 +11,17 @@ services:
             dockerfile: ./docker/php/Dockerfile
         volumes:
             - ./src/:/var/www/html
-        environment:
-            - DB_CONNECTION=mysql
-            - DB_HOST=db
-            - DB_PORT=3306
-            - DB_DATABASE=db_name
-            - DB_USERNAME=db_user
-            - DB_PASSWORD=db_password
+        # environment:
+            # - DB_CONNECTION=mysql
+            # - DB_HOST=db
+            # - DB_PORT=3306
+            # - DB_DATABASE=db_name
+            # - DB_USERNAME=db_user
+            # - DB_PASSWORD=db_password
+            # - DB_TESTING_HOST=db-testing
+            # - DB_TESTING_DATABASE=db_testing_name
+            # - DB_TESTING_USERNAME=db_testing_user
+            # - DB_TESTING_PASSWORD=db_testing_password
 
     web:
         build:
@@ -47,3 +51,17 @@ services:
             TZ: "Asia/Tokyo"
         volumes:
             - mysql-volume:/var/lib/mysql
+
+    db-testing:
+        build:
+            context: .
+            dockerfile: ./docker/mysql/Dockerfile
+        platform: linux/x86_64      # M1 mac用
+        ports:
+            - 3307:3306
+        environment:
+            MYSQL_DATABASE: db_testing_name
+            MYSQL_USER: db_testing_user
+            MYSQL_PASSWORD: db_testing_password
+            MYSQL_ROOT_PASSWORD: root
+            TZ: "Asia/Tokyo"

@@ -5,17 +5,22 @@
         <v-app-bar color="pink accent-4" dark>
             <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-            <router-link to="/">
+            <RouterLink to="/">
                 <v-btn>
                     <v-toolbar-title>麻雀 何キル？？？</v-toolbar-title>
                 </v-btn>
-            </router-link>
+            </RouterLink>
 
             <div class="flex-grow-1"></div>
 
-            <router-link to="/post_question">
+            <RouterLink to="/post_question">
                 <v-btn color="red" elevation="10">問題を投稿する</v-btn>
-            </router-link>
+            </RouterLink>
+
+            <RouterLink to="/login">
+                <v-btn elevation="10">ログイン</v-btn>
+            </RouterLink>
+
 
             <v-btn icon>
                 <v-icon>mdi-heart</v-icon>

@@ -1,7 +1,7 @@
 <template>
     <!-- <v-row class="text-center"> -->
     <v-row>
-        <v-card elevation="5" outlined width="1000px" class="mx-auto mt-5">
+        <v-card elevation="5" outlined width="1200px" class="mx-auto mt-5">
             <v-card-title class="card-title-list">
                 <div class="question-number">
                     問題 : {{ item.id }}

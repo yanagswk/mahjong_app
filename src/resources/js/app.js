@@ -38,6 +38,7 @@ import App from "./App.vue";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import "@mdi/font/css/materialdesignicons.css";     //<v-icon>アイコンを使えるように
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 Vue.use(Vuetify);
 
