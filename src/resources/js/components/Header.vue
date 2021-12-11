@@ -21,6 +21,8 @@
                 <v-btn elevation="10">ログイン</v-btn>
             </RouterLink>
 
+            <v-btn elevation="10" @click="logout">ログアウト</v-btn>
+
 
             <v-btn icon>
                 <v-icon>mdi-heart</v-icon>
@@ -48,3 +50,17 @@
     </div>
     <!-- // <v-icon>mdi-open-in-new</v-icon> -->
 </template>
+
+<script>
+export default {
+    methods: {
+        /**
+         * ストアからログアウトAPI呼び出し
+         */
+        async logout() {
+            await this.$store.dispatch('auth/logout');
+            this.$router.push("/");
+        }
+    }
+}
+</script>
