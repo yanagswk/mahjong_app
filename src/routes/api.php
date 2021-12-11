@@ -26,3 +26,12 @@ Route::post('post_answer', 'MahjongProblemController@setProblemAnswer');
 
 // 回答取得api
 Route::get('answer_result', 'MahjongProblemController@getAnswerResult');
+
+// 会員登録
+Route::post('/register', 'Auth\RegisterController@register')->name('register');
+
+// ログイン
+Route::post('/login', 'Auth\LoginController@login')->name('login');
+
+// ログアウト
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
