@@ -108,8 +108,8 @@ export default {
         return {
             tab: 1,
             loginForm: {
-                name: "",
                 email: "",
+                password: "",
             },
             registerForm: {
                 name: "",

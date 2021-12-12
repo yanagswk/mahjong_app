@@ -43,6 +43,10 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 Vue.use(Vuetify);
 
+const createApp = async () => {
+    await store.dispatch('auth/currentUser');
+}
+
 new Vue({
     el: "#app",
     vuetify: new Vuetify(),
@@ -54,3 +58,5 @@ new Vue({
         iconfont: "mdi",
     },
 });
+
+createApp();

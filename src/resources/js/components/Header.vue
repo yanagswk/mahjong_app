@@ -21,8 +21,16 @@
                 <v-btn elevation="10">ログイン</v-btn>
             </RouterLink>
 
-            <v-btn elevation="10" @click="logout">ログアウト</v-btn>
+            <v-btn
+                v-if="isLogin"
+                elevation="10"
+                @click="logout"
+                >ログアウト
+            </v-btn>
 
+            <span v-if="isLogin">
+                {{ username }}
+            </span>
 
             <v-btn icon>
                 <v-icon>mdi-heart</v-icon>
@@ -53,6 +61,20 @@
 
 <script>
 export default {
+    computed: {
+        /**
+         * ログインチェック
+         */
+        isLogin() {
+            return this.$store.getters['auth/check'];
+        },
+        /**
+         * ログインユーザー取得
+         */
+        username() {
+            return this.$store.getters['auth/username']
+        }
+    },
     methods: {
         /**
          * ストアからログアウトAPI呼び出し
