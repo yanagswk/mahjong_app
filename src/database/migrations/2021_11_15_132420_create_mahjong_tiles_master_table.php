@@ -15,7 +15,10 @@ class CreateMahjongTilesMasterTable extends Migration
     {
         Schema::create('mahjong_tiles_master', function (Blueprint $table) {
             $table->increments('id');
+            $table->bigInteger('tiles_group_id')->unsigned()->nullable()->comment('牌のグループ');
             $table->string('mahjong_tiles')->unique()->comment('牌の画像URL');
+
+            $table->foreign('tiles_group_id')->references('id')->on('tiles_group_master')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

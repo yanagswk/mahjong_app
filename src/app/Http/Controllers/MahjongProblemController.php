@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class MahjongProblemController extends Controller
 {
     /**
-     * 問題取得
+     * 問題一覧取得
      */
     public function getProblemList()
     {
@@ -95,8 +95,6 @@ class MahjongProblemController extends Controller
             ->get()
             ->toArray();
 
-
-
         $mahjong_problem = MahjongProblem::where('mahjong_problem.id', $question_id)
             ->problemList()
             ->first()
@@ -127,4 +125,13 @@ class MahjongProblemController extends Controller
             'answer_count' => $answer_count
         ], 200);
     }
+
+
+    /**
+     * 問題投稿画面
+     */
+    // public function getPostQuestion()
+    // {
+
+    // }
 }
