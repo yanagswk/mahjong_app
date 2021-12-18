@@ -71,7 +71,15 @@ export default {
             apiStatus: state => state.auth.apiStatus
         }),
         ...mapGetters({
+            /**
+             * ログインチェック
+             * @return {boolean}
+             */
             isLogin: 'auth/check',
+            /**
+             * ログインしているユーザー名
+             * @return {string}
+             */
             username: 'auth/username'
         }),
         /**

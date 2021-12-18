@@ -7,7 +7,6 @@ import PostQuestion from "./pages/PostQuestion.vue";
 import QuestionAnswer from "./pages/QuestionAnswer.vue";
 import SystemError from './pages/errors/System.vue'
 
-
 import store from './store';
 
 // VueRouterプラグインを使用する
@@ -34,7 +33,15 @@ const routes = [
     },
     {
         path: "/post_question",
-        component: PostQuestion
+        component: PostQuestion,
+        beforeEnter(to, from, next) {
+            // ログインしていなかったらログイン画面へ
+            if (!store.getters['auth/check']) {
+                next('/login');
+            } else {
+                next();
+            }
+        }
     },
     {
         path: "/question_answer/:id",

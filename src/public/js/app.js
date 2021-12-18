@@ -2149,7 +2149,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.auth.apiStatus;
     }
   })), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])({
+    /**
+     * ログインチェック
+     * @return {boolean}
+     */
     isLogin: 'auth/check',
+
+    /**
+     * ログインしているユーザー名
+     * @return {string}
+     */
     username: 'auth/username'
   })),
   methods: {
@@ -69906,7 +69915,15 @@ var routes = [{
   }
 }, {
   path: "/post_question",
-  component: _pages_PostQuestion_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+  component: _pages_PostQuestion_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    // ログインしていなかったらログイン画面へ
+    if (!_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters['auth/check']) {
+      next('/login');
+    } else {
+      next();
+    }
+  }
 }, {
   path: "/question_answer/:id",
   component: _pages_QuestionAnswer_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
