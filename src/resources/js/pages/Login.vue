@@ -26,6 +26,15 @@
                                         type="text"
                                         v-model="loginForm.email"
                                     />
+                                    <div v-if="loginErrors">
+                                        <div
+                                            v-for="msg in loginErrors.email"
+                                            :key="msg"
+                                            style="color: red"
+                                        >
+                                            {{ msg }}
+                                        </div>
+                                    </div>
                                     <v-text-field
                                         id="password"
                                         label="Password"
@@ -34,14 +43,21 @@
                                         type="password"
                                         v-model="loginForm.password"
                                     />
+                                    <div v-if="loginErrors">
+                                        <div
+                                            v-for="msg in loginErrors.password"
+                                            :key="msg"
+                                            style="color: red"
+                                        >
+                                            {{ msg }}
+                                        </div>
+                                    </div>
                                 </v-form>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer />
-                                <v-btn
-                                    color="primary"
-                                    @click="login"
-                                >ログイン
+                                <v-btn color="primary" @click="login"
+                                    >ログイン
                                 </v-btn>
                             </v-card-actions>
                         </div>
@@ -58,6 +74,15 @@
                                         type="text"
                                         v-model="registerForm.name"
                                     />
+                                    <div v-if="registerErrors">
+                                        <div
+                                            v-for="msg in registerErrors.name"
+                                            :key="msg"
+                                            style="color: red"
+                                        >
+                                            {{ msg }}
+                                        </div>
+                                    </div>
                                     <v-text-field
                                         label="Email"
                                         name="email"
@@ -65,6 +90,15 @@
                                         type="text"
                                         v-model="registerForm.email"
                                     />
+                                    <div v-if="registerErrors">
+                                        <div
+                                            v-for="msg in registerErrors.email"
+                                            :key="msg"
+                                            style="color: red"
+                                        >
+                                            {{ msg }}
+                                        </div>
+                                    </div>
                                     <v-text-field
                                         id="password"
                                         label="Password"
@@ -73,23 +107,28 @@
                                         type="password"
                                         v-model="registerForm.password"
                                     />
+                                    <div v-if="registerErrors">
+                                        <div
+                                            v-for="msg in registerErrors.password"
+                                            :key="msg"
+                                            style="color: red"
+                                        >
+                                            {{ msg }}
+                                        </div>
+                                    </div>
                                     <v-text-field
                                         id="password_confirmation"
                                         label="Password (confirm)"
                                         name="password_confirmation"
                                         prepend-icon="lock"
                                         type="password"
-                                        v-model="
-                                            registerForm.password_confirmation
-                                        "
+                                        v-model="registerForm.password_confirmation"
                                     />
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-spacer />
-                                    <v-btn
-                                        color="primary"
-                                        @click="register"
-                                    >登録
+                                    <v-btn color="primary" @click="register"
+                                        >登録
                                     </v-btn>
                                 </v-card-actions>
                             </v-form>
@@ -103,6 +142,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
     data() {
         return {
@@ -119,14 +160,50 @@ export default {
             },
         };
     },
+    computed: {
+        ...mapState({
+            /**
+             * ストアのapi判定を返す
+             * @return {bool}
+             */
+            apiStatus: (state) => state.auth.apiStatus,
+            /**
+             * ストアのログインエラーメッセージを返す
+             * @return {string}
+             */
+            loginErrors: (state) => state.auth.loginErrorMessages,
+            /**
+             * ストアの登録エラーメッセージを返す
+             * @returns {string}
+             */
+            registerErrors: (state) => state.auth.registerErrorMessages,
+        }),
+        // /**
+        //  * ストアのapi判定を返す
+        //  * @return {bool}
+        //  */
+        // apiStatus() {
+        //     return this.$store.state.auth.apiStatus;
+        // },
+        // /**
+        //  * ストアのログインエラーメッセージを返す
+        //  * @return {string}
+        //  */
+        // loginErrors() {
+        //     return this.$store.state.auth.loginErrorMessages;
+        // },
+    },
     methods: {
         /**
          * 会員登録api
          */
         async register() {
-            // authストアのregisterアクション呼び出し
+            // authストアのregisterアクションを呼び出す
             await this.$store.dispatch("auth/register", this.registerForm);
-            this.$router.push("/");
+            // trueの場合のみトップページへ遷移
+            if (this.apiStatus) {
+                this.$router.push("/");
+            }
         },
         /**
          * ログインapi
@@ -134,8 +211,22 @@ export default {
         async login() {
             // authストアのloginアクションを呼び出す
             await this.$store.dispatch("auth/login", this.loginForm);
-            this.$router.push("/");
+            // trueの場合のみトップページへ遷移
+            if (this.apiStatus) {
+                this.$router.push("/");
+            }
         },
+        /**
+         * エラーメッセージをクリアする
+         */
+        clearError() {
+            this.$store.commit("auth/setLoginErrorMessages", null),
+                this.$store.commit("auth/setRegisterErrorMessages", null);
+        },
+    },
+    created() {
+        // 表示するタイイングでエラーメッセージをクリア
+        this.clearError();
     },
 };
 </script>

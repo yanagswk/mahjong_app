@@ -5,6 +5,10 @@ import QuestionList from "./pages/QuestionList.vue";
 import Login from "./pages/Login.vue";
 import PostQuestion from "./pages/PostQuestion.vue";
 import QuestionAnswer from "./pages/QuestionAnswer.vue";
+import SystemError from './pages/errors/System.vue'
+
+
+import store from './store';
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -19,6 +23,14 @@ const routes = [
     {
         path: "/login",
         component: Login,
+        beforeEnter(to, from, next) {
+            // ログインしてたら一覧画面へ
+            if (store.getters['auth/check']) {
+                next('/');
+            } else {
+                next();
+            }
+        }
     },
     {
         path: "/post_question",
@@ -28,6 +40,10 @@ const routes = [
         path: "/question_answer/:id",
         component: QuestionAnswer,
         props: true
+    },
+    {
+        path: '/500',
+        component: SystemError
     }
 ];
 
@@ -41,4 +57,3 @@ const router = new VueRouter({
 // app.jsでインポートするため
 export default router;
 
-// http://127.0.0.1:80/storage/five_sou.png

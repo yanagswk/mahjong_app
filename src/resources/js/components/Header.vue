@@ -18,7 +18,10 @@
             </RouterLink>
 
             <RouterLink to="/login">
-                <v-btn elevation="10">ログイン</v-btn>
+                <v-btn
+                    elevation="10"
+                    v-if="!isLogin"
+                    >ログイン</v-btn>
             </RouterLink>
 
             <v-btn
@@ -60,20 +63,29 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 export default {
     computed: {
+        ...mapState({
+            apiStatus: state => state.auth.apiStatus
+        }),
+        ...mapGetters({
+            isLogin: 'auth/check',
+            username: 'auth/username'
+        }),
         /**
          * ログインチェック
          */
-        isLogin() {
-            return this.$store.getters['auth/check'];
-        },
+        // isLogin() {
+        //     return this.$store.getters['auth/check'];
+        // },
         /**
          * ログインユーザー取得
          */
-        username() {
-            return this.$store.getters['auth/username']
-        }
+        // username() {
+        //     return this.$store.getters['auth/username']
+        // }
     },
     methods: {
         /**
@@ -81,7 +93,9 @@ export default {
          */
         async logout() {
             await this.$store.dispatch('auth/logout');
-            this.$router.push("/");
+            if (this.apiStatus) {
+                this.$router.push('/login');
+            }
         }
     }
 }

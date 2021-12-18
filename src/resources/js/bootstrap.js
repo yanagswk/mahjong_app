@@ -20,8 +20,6 @@
 //     return config;
 // });
 
-
-
 import { getCookieValue } from './until'
 
 window.axios = require('axios')
@@ -35,3 +33,9 @@ window.axios.interceptors.request.use(config => {
 
     return config
 })
+
+// レスポンスを受けた後の処理を上書き
+window.axios.interceptors.response.use(
+    response => response,
+    error => error.response || error
+)
