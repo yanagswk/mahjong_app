@@ -50,46 +50,34 @@
                 </div>
 
                 <div v-for="(tiles, index) in select_tiles_list" :key="index" class="question-tail mr-1">
-                    <!-- TODO: 用意できる牌の数より多くなったら選択できないようにする(例えば中が5つはありえない) -->
-                    <div v-if="!tiles">
-                        <v-sheet
-                            color="grey darken-2"
-                            elevation="1"
-                            height="60"
-                            width="40"
-                            style="overflow: auto;"
-                        ></v-sheet>
-                    </div>
-                    <div v-else>
+                    <!-- TODO: 牌の数　制限設ける -->
+                    <v-sheet
+                        color="grey darken-1"
+                        elevation="1"
+                        height="55"
+                        width="40"
+                    >
                         <v-img
+                            v-if="tiles"
                             :src="tiles.mahjong_tiles"
                             max-height="60"
                             max-width="40"
                         ></v-img>
-                    </div>
+                    </v-sheet>
                 </div>
-
             </div>
         </v-card-text>
-
-
-<!-- <v-card>
-    <v-img
-        src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-        height="200px"
-        class="woo" style="overflow: visible"
-    >
-    <v-avatar style="postion:absolute; left: 44%; top: 80% " rounded width="80px" class="pa-1" height="80px">
-        <img width="80" height="80" src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
-    </v-avatar>
-    </v-img>
-</v-card> -->
-
 
         <v-btn
             elevation="5"
             @click="sort_tiles()"
             >理牌する
+        </v-btn>
+
+        <v-btn
+            elevation="5"
+            @click="reset_tiles()"
+            >リセット
         </v-btn>
 
         <v-select
@@ -197,6 +185,14 @@ export default {
          */
         sort_tiles() {
             this.select_tiles_list.sort((a, b) => a.id - b.id);
+        },
+        /**
+         * 選択された牌リストをリセットする
+         */
+        reset_tiles() {
+            this.select_tiles_list.splice(0);
+            this.create_select_tiles_list();
+            this.click_count = 0;
         },
         /**
          * 牌のグループごとの配列作成

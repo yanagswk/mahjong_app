@@ -2816,18 +2816,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2917,6 +2905,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.select_tiles_list.sort(function (a, b) {
         return a.id - b.id;
       });
+    },
+
+    /**
+     * 選択された牌リストをリセットする
+     */
+    reset_tiles: function reset_tiles() {
+      this.select_tiles_list.splice(0);
+      this.create_select_tiles_list();
+      this.click_count = 0;
     },
 
     /**
@@ -6529,36 +6526,31 @@ var render = function () {
                 "div",
                 { key: index, staticClass: "question-tail mr-1" },
                 [
-                  !tiles
-                    ? _c(
-                        "div",
-                        [
-                          _c("v-sheet", {
-                            staticStyle: { overflow: "auto" },
-                            attrs: {
-                              color: "grey darken-2",
-                              elevation: "1",
-                              height: "60",
-                              width: "40",
-                            },
-                          }),
-                        ],
-                        1
-                      )
-                    : _c(
-                        "div",
-                        [
-                          _c("v-img", {
+                  _c(
+                    "v-sheet",
+                    {
+                      attrs: {
+                        color: "grey darken-1",
+                        elevation: "1",
+                        height: "55",
+                        width: "40",
+                      },
+                    },
+                    [
+                      tiles
+                        ? _c("v-img", {
                             attrs: {
                               src: tiles.mahjong_tiles,
                               "max-height": "60",
                               "max-width": "40",
                             },
-                          }),
-                        ],
-                        1
-                      ),
-                ]
+                          })
+                        : _vm._e(),
+                    ],
+                    1
+                  ),
+                ],
+                1
               )
             }),
           ],
@@ -6576,7 +6568,20 @@ var render = function () {
             },
           },
         },
-        [_vm._v("理牌する\n        ")]
+        [_vm._v("理牌する\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        {
+          attrs: { elevation: "5" },
+          on: {
+            click: function ($event) {
+              return _vm.reset_tiles()
+            },
+          },
+        },
+        [_vm._v("リセット\n    ")]
       ),
       _vm._v(" "),
       _c("v-select", {
