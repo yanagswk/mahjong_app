@@ -87,6 +87,21 @@ class MahjongProblemModule
         $answer_sum = array_sum($answer_count);
         return $answer_sum;
     }
+
+
+    /**
+     * 牌の名前のみの配列を返す
+     * @param array $mahjong_tiles_master 牌のマスターデータ
+     * @return array
+     */
+    public function getTilesNameArray(array $mahjong_tiles_master): array
+    {
+        if (empty($mahjong_tiles_master)) {
+            return [];
+        }
+        $tiles_name_list = array_column($mahjong_tiles_master, 'tiles_name');
+        return $tiles_name_list;
+    }
 }
 
 ?>

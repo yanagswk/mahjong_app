@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\DirectionMaster;
 use Illuminate\Http\Request;
 use App\MahjongProblem;
 use App\MahjongTilesMaster;
 use App\Module\MahjongProblemModule;
+use App\StationMaster;
+use App\TilesGroupMaster;
 use App\UserAnswer;
 use Illuminate\Support\Facades\DB;
 
@@ -130,8 +133,46 @@ class MahjongProblemController extends Controller
     /**
      * 問題投稿画面
      */
-    // public function getPostQuestion()
-    // {
+    public function getPostQuestion()
+    {
+        // 全ての牌を取得
+        $mahjong_tiles_master = MahjongTilesMaster::select()
+            ->orderBy('id', 'asc')
+            ->get()
+            ->toArray();
+        if (empty($mahjong_tiles_master)) {
+            $mahjong_tiles_master = [];
+        }
 
-    // }
+        // 局マスターデータ取得
+        $station_list = StationMaster::orderBy('id', 'asc')
+            ->pluck('station')
+            ->toArray();
+
+        // 自風マスターデータ取得
+        $direction_list = DirectionMaster::orderBy('id', 'asc')
+            ->pluck('direction')
+            ->toArray();
+
+        $tiles_group_list = TilesGroupMaster::orderBy('id', 'asc')
+            ->get()
+            ->toArray();
+
+        // 巡目データ返す(20ぐらいまで)
+        $round = (config('mahjong_problem.round')) ? config('mahjong_problem.round') : 20;
+
+        // 全牌の名前を返す
+        // $mahjong_problem = new MahjongProblemModule;
+        // $tiles_name_list = $mahjong_problem->getTilesNameArray($mahjong_tiles_master);
+
+        // TODO: tiles_group_masterテーブルも返してあげて、vue側で処理する
+
+        return response()->json([
+            'station_list' => $station_list,
+            'direction_list' => $direction_list,
+            'tiles_name_list' => $mahjong_tiles_master,
+            'tiles_group_list' => $tiles_group_list,
+            'round' => $round
+        ]);
+    }
 }

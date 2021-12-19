@@ -1,7 +1,12 @@
 export const OK = 200                       // 成功
-export const CREATED = 201                  //
+export const CREATED = 201                  // 新規登録
 export const INTERNAL_SERVER_ERROR = 500    // サーバーエラー
 export const UNPROCESSABLE_ENTITY = 422     // バリデーションエラー
+
+export const MANZU_NUMBER = 1               // 萬子
+export const PINZU_NUMBER = 2               // 筒子
+export const SOUZU_NUMBER = 3               // 索子
+export const JIHAI_NUMBER = 4               // 字牌
 
 /**
  * クッキーの値を生成する

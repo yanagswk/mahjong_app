@@ -38,3 +38,6 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 // ログインユーザー返却
 Route::get('/user', fn() => Auth::user())->name('user');
+
+// 問題投稿画面
+Route::get('/post_question', 'MahjongProblemController@getPostQuestion')->name('getPostQuestion');
