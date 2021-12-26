@@ -211,8 +211,15 @@ export default {
         async login() {
             // authストアのloginアクションを呼び出す
             await this.$store.dispatch("auth/login", this.loginForm);
-            // trueの場合のみトップページへ遷移
             if (this.apiStatus) {
+
+                // ログインメッセージ
+                this.$store.commit('message/setContent', {
+                    content: 'ログインしました。',
+                    timeout: 10000
+                })
+
+                // trueの場合のみトップページへ遷移
                 this.$router.push("/");
             }
         },
@@ -221,7 +228,7 @@ export default {
          */
         clearError() {
             this.$store.commit("auth/setLoginErrorMessages", null),
-                this.$store.commit("auth/setRegisterErrorMessages", null);
+            this.$store.commit("auth/setRegisterErrorMessages", null);
         },
     },
     created() {

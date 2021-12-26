@@ -82,18 +82,6 @@ export default {
              */
             username: 'auth/username'
         }),
-        /**
-         * ログインチェック
-         */
-        // isLogin() {
-        //     return this.$store.getters['auth/check'];
-        // },
-        /**
-         * ログインユーザー取得
-         */
-        // username() {
-        //     return this.$store.getters['auth/username']
-        // }
     },
     methods: {
         /**
@@ -102,6 +90,10 @@ export default {
         async logout() {
             await this.$store.dispatch('auth/logout');
             if (this.apiStatus) {
+                // ログアウトメッセージ
+                this.$store.commit('message/setContent', {
+                    content: 'ログアウトしました',
+                })
                 this.$router.push('/login');
             }
         }
