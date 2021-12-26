@@ -9,6 +9,7 @@ const state = {
 
 const getters = {
     check: (state) => !!state.user,
+    userId: (state) => (state.user ? state.user.id : ""),
     username: (state) => (state.user ? state.user.name : ""),
 };
 

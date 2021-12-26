@@ -19,8 +19,8 @@
                     持ち点{{ item.have_point }}
                 </div>
                 <!-- TODO: ユーザーのアイコン入れる -->
-                <div v-if="item.user_id" class="card-title-item-user">
-                    ユーザー名{{ item.user_id }}
+                <div v-if="item.name" class="card-title-item-user">
+                    ユーザー名{{ item.name }}
                 </div>
             </v-card-title>
 

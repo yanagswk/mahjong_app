@@ -65,7 +65,7 @@ class MahjongProblem extends Model
     {
         return $query->select([
             'mahjong_problem.id',
-            'mahjong_problem.user_id',
+            'users.name',
             'problem_tiles1.mahjong_tiles as problem_tiles1',
             'problem_tiles2.mahjong_tiles as problem_tiles2',
             'problem_tiles3.mahjong_tiles as problem_tiles3',
@@ -88,6 +88,7 @@ class MahjongProblem extends Model
             'answer2.mahjong_tiles as answer2',
             'mahjong_problem.description'
         ])
+        ->leftJoin('users', 'users.id', '=', 'mahjong_problem.user_id')
         ->leftJoin('mahjong_tiles_master as problem_tiles1', 'problem_tiles1.id', 'mahjong_problem.problem_tiles1')
         ->leftJoin('mahjong_tiles_master as problem_tiles2', 'problem_tiles2.id', 'mahjong_problem.problem_tiles2')
         ->leftJoin('mahjong_tiles_master as problem_tiles3', 'problem_tiles3.id', 'mahjong_problem.problem_tiles3')

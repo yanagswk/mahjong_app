@@ -20,8 +20,8 @@
             <v-chip
                 color="orange"
             >回答数: {{ answer_count }}</v-chip>
-            <div v-if="problem.user_id" class="card-title-item-user">
-                ユーザー名: {{ problem.user_id }}
+            <div v-if="problem.name" class="card-title-item-user">
+                ユーザー名: {{ problem.name }}
             </div>
         </v-card-title>
 
@@ -95,6 +95,7 @@ export default {
                 return false;
             }
             this.problem = response.data.problem;
+            console.log(this.problem)
             this.user_answer_list = response.data.user_answer_list;
             this.answer_count = response.data.answer_count;
         },

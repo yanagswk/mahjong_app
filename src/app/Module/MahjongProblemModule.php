@@ -14,11 +14,6 @@ class MahjongProblemModule
     {
         foreach ($problem_list as $key => $problem) {
 
-            // TODO: 仮データ 消す予定
-            if ($key == 'user_id') {
-                $problem_list[$key] = 111111;
-            }
-
             if (strpos($key, 'problem_tiles') !== false) {
                 $problem_tiles_list[] = $problem_list[$key];
                 unset($problem_list[$key]);
@@ -81,7 +76,7 @@ class MahjongProblemModule
     public function sumAnswerCount(array $answer_list): int
     {
         if (empty($answer_list)) {
-            return [];
+            return 0;
         }
         $answer_count = array_column($answer_list, 'answer_count');
         $answer_sum = array_sum($answer_count);

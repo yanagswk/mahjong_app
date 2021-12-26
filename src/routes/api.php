@@ -41,3 +41,6 @@ Route::get('/user', fn() => Auth::user())->name('user');
 
 // 問題投稿画面
 Route::get('/post_question', 'MahjongProblemController@getPostQuestion')->name('getPostQuestion');
+
+// 問題投稿処理
+Route::post('/post_question', 'MahjongProblemController@postQuestion')->name('postQuestion');

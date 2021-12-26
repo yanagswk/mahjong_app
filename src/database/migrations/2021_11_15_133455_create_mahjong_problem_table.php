@@ -36,7 +36,7 @@ class CreateMahjongProblemTable extends Migration
             $table->integer('dora')->unsigned()->nullable()->comment('ドラ牌');
             $table->integer('have_point')->nullable()->comment('持ち点');
             $table->integer('answer1')->unsigned()->comment('答えの牌1');
-            $table->integer('answer2')->unsigned()->comment('答えの牌2');
+            $table->integer('answer2')->unsigned()->nullable()->comment('答えの牌2');
             $table->string('description')->nullable()->comment('答えの説明');
             $table->boolean('publish')->comment('公開するか');
             $table->timestamps();
