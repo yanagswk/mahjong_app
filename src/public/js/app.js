@@ -2727,7 +2727,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   // ログインメッセージ
                   _this2.$store.commit('message/setContent', {
                     content: 'ログインしました。',
-                    timeout: 10000
+                    timeout: 5000
                   }); // trueの場合のみトップページへ遷移
 
 
@@ -6278,7 +6278,7 @@ var render = function () {
   return _c(
     "v-snackbar",
     {
-      attrs: { timeout: _vm.timeout },
+      attrs: { top: true, timeout: _vm.timeout },
       scopedSlots: _vm._u([
         {
           key: "action",

@@ -216,7 +216,7 @@ export default {
                 // ログインメッセージ
                 this.$store.commit('message/setContent', {
                     content: 'ログインしました。',
-                    timeout: 10000
+                    timeout: 5000
                 })
 
                 // trueの場合のみトップページへ遷移

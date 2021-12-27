@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-model="flag" :timeout="timeout">
+    <v-snackbar :top="true" v-model="flag" :timeout="timeout">
         {{ content }}
         <template v-slot:action="{ attrs }">
             <v-btn color="pink" text v-bind="attrs" @click="deleteContent()">
