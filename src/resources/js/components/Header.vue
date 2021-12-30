@@ -91,9 +91,11 @@ export default {
             await this.$store.dispatch('auth/logout');
             if (this.apiStatus) {
                 // ログアウトメッセージ
-                this.$store.commit('message/setContent', {
-                    content: 'ログアウトしました',
-                })
+                this.$store.dispatch('message/ADD_MESSAGES', {
+                    content: "ログアウト",
+                    color: "red",
+                    timeout: "3000"
+                });
                 this.$router.push('/login');
             }
         }

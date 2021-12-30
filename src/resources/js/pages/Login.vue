@@ -213,11 +213,11 @@ export default {
             await this.$store.dispatch("auth/login", this.loginForm);
             if (this.apiStatus) {
 
-                // ログインメッセージ
-                this.$store.commit('message/setContent', {
-                    content: 'ログインしました。',
-                    timeout: 5000
-                })
+                this.$store.dispatch('message/ADD_MESSAGES', {
+                    content: "ログイン",
+                    color: "red",
+                    timeout: "3000"
+                });
 
                 // trueの場合のみトップページへ遷移
                 this.$router.push("/");

@@ -3,7 +3,8 @@
         <Header />
 
         <v-main>
-            <Message />
+            <!-- <Message /> -->
+            <MultipleMessage />
             <RouterView />
         </v-main>
 
@@ -12,7 +13,8 @@
 </template>
 
 <script>
-import Message from "./components/message.vue";
+// import Message from "./components/message.vue";
+import MultipleMessage from "./components/MultipleMessage.vue";
 import QuestionList from "./pages/QuestionList.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
@@ -21,7 +23,8 @@ import { INTERNAL_SERVER_ERROR } from "./until";
 export default {
     name: "App",
     components: {
-        Message,
+        // Message,
+        MultipleMessage,
         QuestionList,
         Header,
         Footer,
