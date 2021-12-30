@@ -11,7 +11,6 @@ const mutations = {
      * @param {int}    timeout  表示時間
      */
     setContent(state, {content, timeout}) {
-        console.log(content, timeout)
         state.content = content;
         state.flag = true;
         if (typeof timeout === "undefined") {

@@ -42,6 +42,8 @@ class MahjongProblem extends Model
         'publish',
     ];
 
+    public const Unselected = 0;    // 選択しない
+
     /**
      * リレーション : station_masterテーブル
      */

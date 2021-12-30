@@ -1,8 +1,9 @@
 <template>
+<v-container>
+
     <v-card elevation="5" outlined width="1000px" class="mx-auto mt-5 text-center">
         <v-card-text>
             <div class="question-tail-list">
-                <!-- TODO: リファクタリングしたい -->
                 <div class="mb-3 tiles_list">
                     <div v-for="(tiles, index) in manzu_list" :key="index" class="question-tail">
                         <!-- TODO: mahjong_tilesをmahjong_tiles_imgに変える(カラム名を変えることになりそう) -->
@@ -83,96 +84,113 @@
 
         <v-divider class="mx-3 my-3"></v-divider>
 
-        <v-form @submit.prevent="post_question">
-            <v-select
-                v-model="select_station"
-                label="局"
-                :items="station_list"
-                item-text="station"
-                item-value="id"
-                class="select-box"
-                dense
-                outlined
-            ></v-select>
+        <!-- <v-row class="text-center"> -->
+            <v-form @submit.prevent="post_question">
+                <div style="display: flex;">
 
-            <v-select
-                v-model="select_direction"
-                label="自風"
-                :items="direction_list"
-                item-text="direction"
-                item-value="id"
-                class="select-box"
-                dense
-                outlined
-            ></v-select>
+                <!-- <v-col cols="2"> -->
 
-            <v-select
-                v-model="select_round"
-                :items="round_list"
-                item-text="round"
-                item-value="id"
-                label="巡目"
-                class="select-box"
-                dense
-                outlined
-            ></v-select>
 
-            <v-select
-                v-model="select_dora_tiles"
-                :items="select_list"
-                item-text="tiles_name"
-                item-value="id"
-                label="ドラ"
-                class="select-box"
-                dense
-                outlined
-            ></v-select>
+                    <v-select
+                        v-model="select_station"
+                        label="局"
+                        :items="station_list"
+                        item-text="station"
+                        item-value="id"
+                        class="select-box"
+                        dense
+                        outlined
+                    ></v-select>
+                <!-- </v-col> -->
 
-            <v-text-field
-                ref="count"
-                label="持ち点"
-                v-model.number="have_point"
-                type="number"
-                max="100000"
-                min="0"
-                step="1000"
-            ></v-text-field>
+                <!-- <v-col cols="2"> -->
+                    <v-select
+                        v-model="select_direction"
+                        label="自風"
+                        :items="direction_list"
+                        item-text="direction"
+                        item-value="id"
+                        class="select-box"
+                        dense
+                        outlined
+                    ></v-select>
+                <!-- </v-col> -->
 
-            <v-chip color="red">
-                ユーザー名 : {{ username }}
-            </v-chip>
+                <!-- <v-col cols="2"> -->
+                    <v-select
+                        v-model="select_round"
+                        :items="round_list"
+                        item-text="round"
+                        item-value="id"
+                        label="巡目"
+                        class="select-box"
+                        dense
+                        outlined
+                    ></v-select>
+                <!-- </v-col> -->
 
-            <v-select
-                v-model="select_answer_tiles"
-                :items="select_list"
-                item-text="tiles_name"
-                item-value="id"
-                label="回答の牌"
-                class="select-box"
-                dense
-                outlined
-                required
-            ></v-select>
+                    <v-select
+                        v-model="select_dora_tiles"
+                        :items="select_list"
+                        item-text="tiles_name"
+                        item-value="id"
+                        label="ドラ"
+                        class="select-box"
+                        dense
+                        outlined
+                    ></v-select>
 
-            <v-textarea
-                width="500px"
-                solo
-                label="解説"
-                elevation="5"
-                v-model="commentary"
-            ></v-textarea>
+                    <v-text-field
+                        ref="count"
+                        label="持ち点"
+                        v-model.number="have_point"
+                        type="number"
+                        max="100000"
+                        min="0"
+                        step="1000"
+                        class="select-box"
+                    ></v-text-field>
 
-            <v-card-actions>
-                <v-btn
-                    type="submit"
-                    block
-                    elevation="2"
-                >問題を投稿する
-                </v-btn>
-            </v-card-actions>
-        </v-form>
+                </div>
+
+                <v-chip color="red">
+                    ユーザー名 : {{ username }}
+                </v-chip>
+
+                <v-select
+                    v-model="select_answer_tiles"
+                    :items="select_list"
+                    item-text="tiles_name"
+                    item-value="id"
+                    label="回答の牌"
+                    dense
+                    outlined
+                    required
+                    style="width: 200px;"
+                ></v-select>
+
+                <v-textarea
+                    width="500px"
+                    solo
+                    label="解説"
+                    elevation="5"
+                    v-model="commentary"
+                ></v-textarea>
+
+                <v-card-actions>
+                    <v-btn
+                        type="submit"
+                        block
+                        elevation="2"
+                    >問題を投稿する
+                    </v-btn>
+                </v-card-actions>
+            <!-- </div> -->
+            </v-form>
+        <!-- </v-row> -->
 
     </v-card>
+    </v-container>
 </template>
 
 <script>
@@ -184,7 +202,7 @@ export default {
         return {
             station_list: [],       // 局リスト
             direction_list: [],     // 自風リスト
-            tiles_list: [],         // 牌リストs
+            tiles_list: [],         // 牌リスト
             tiles_group_list: [],   // 牌のグループリスト
             tiles_name_list: [],
             round: 0,
@@ -284,12 +302,21 @@ export default {
         },
         /**
          * 選択された牌リストをリセットする
+         * TODO: 「指定しない」を追加 のところどうにかする
          */
         reset_tiles() {
             this.select_tiles_list.splice(0);
             this.select_list.splice(0);
             this.create_select_tiles_list();
             this.click_count = 0;
+
+            // 「指定しない」を追加
+            const unselectDoraObj = {
+                id: 0,
+                tiles_name: '指定しない'
+            }
+            this.select_list.unshift(unselectDoraObj);
+            this.select_dora_tiles = unselectDoraObj.id;
         },
         /**
          * 牌のグループごとの配列作成
@@ -332,6 +359,43 @@ export default {
             });
         },
         /**
+         * 「指定しない」を配列に追加して、初期値設定
+         * TODO: リファクタリング
+         */
+        addUnselect() {
+            // 自風
+            const unselectDirectionObj = {
+                id: 0,
+                direction: '指定しない'
+            }
+            this.direction_list.unshift(unselectDirectionObj);
+            this.select_direction = unselectDirectionObj.id;
+
+            // 局
+            const unselectStationObj = {
+                id: 0,
+                station: '指定しない'
+            }
+            this.station_list.unshift(unselectStationObj);
+            this.select_station = unselectStationObj.id;
+
+            // ドラ
+            const unselectDoraObj = {
+                id: 0,
+                tiles_name: '指定しない'
+            }
+            this.select_list.unshift(unselectDoraObj);
+            this.select_dora_tiles = unselectDoraObj.id;
+
+            // 巡目
+            const unselectRoundObj = {
+                id: 0,
+                round: '指定しない'
+            }
+            this.round_list.unshift(unselectRoundObj);
+            this.select_round = unselectRoundObj.id;
+        },
+        /**
          *  バリデーションチェック
          */
         validation_check() {
@@ -371,11 +435,12 @@ export default {
         },
         /**
          * 選択された牌チェック
-         * 牌の数が13以下だった場合はfalse
+         * 牌の数が14以下だった場合はfalse
+         * 「指定しない」の項目を考慮して13ではなく14
          * @return {bool} true: ok / false: ng
          */
         chkSelectTilesList() {
-            if (this.select_list.length !== this.my_tiles_length) {
+            if (this.select_list.length !== this.my_tiles_length+1) {
                 return false
             }
             return true;
@@ -396,6 +461,10 @@ export default {
          * 持ち点チェック
          */
         chkHavePoint() {
+            // 空の場合は正常
+            if (!this.have_point) {
+                return true;
+            }
             // 文字が含んでたらNaNが返る
             if (!Number(this.have_point)) {
                 return false;
@@ -444,7 +513,7 @@ export default {
                 return false;
             }
 
-            return false
+            // return false
 
             const post_data = {
                 tiles_id_list: sort_tiles_id_list,
@@ -477,6 +546,7 @@ export default {
                 this.create_tiles_name_list();
                 this.create_select_tiles_list();
                 this.create_tiles_each_group();
+                this.addUnselect()
             },
             immediate: true, // コンポーネントが生成されたタイミングでも実行
         },
@@ -502,6 +572,6 @@ export default {
     cursor: pointer;
 }
 .select-box {
-    width: 200px;
+    width: 70px;
 }
 </style>

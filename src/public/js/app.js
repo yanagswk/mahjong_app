@@ -2960,6 +2960,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2970,7 +2988,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       direction_list: [],
       // 自風リスト
       tiles_list: [],
-      // 牌リストs
+      // 牌リスト
       tiles_group_list: [],
       // 牌のグループリスト
       tiles_name_list: [],
@@ -3097,12 +3115,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     /**
      * 選択された牌リストをリセットする
+     * TODO: 「指定しない」を追加 のところどうにかする
      */
     reset_tiles: function reset_tiles() {
       this.select_tiles_list.splice(0);
       this.select_list.splice(0);
       this.create_select_tiles_list();
-      this.click_count = 0;
+      this.click_count = 0; // 「指定しない」を追加
+
+      var unselectDoraObj = {
+        id: 0,
+        tiles_name: '指定しない'
+      };
+      this.select_list.unshift(unselectDoraObj);
+      this.select_dora_tiles = unselectDoraObj.id;
     },
 
     /**
@@ -3152,6 +3178,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
 
     /**
+     * 「指定しない」を配列に追加して、初期値設定
+     * TODO: リファクタリング
+     */
+    addUnselect: function addUnselect() {
+      // 自風
+      var unselectDirectionObj = {
+        id: 0,
+        direction: '指定しない'
+      };
+      this.direction_list.unshift(unselectDirectionObj);
+      this.select_direction = unselectDirectionObj.id; // 局
+
+      var unselectStationObj = {
+        id: 0,
+        station: '指定しない'
+      };
+      this.station_list.unshift(unselectStationObj);
+      this.select_station = unselectStationObj.id; // ドラ
+
+      var unselectDoraObj = {
+        id: 0,
+        tiles_name: '指定しない'
+      };
+      this.select_list.unshift(unselectDoraObj);
+      this.select_dora_tiles = unselectDoraObj.id; // 巡目
+
+      var unselectRoundObj = {
+        id: 0,
+        round: '指定しない'
+      };
+      this.round_list.unshift(unselectRoundObj);
+      this.select_round = unselectRoundObj.id;
+    },
+
+    /**
      *  バリデーションチェック
      */
     validation_check: function validation_check() {
@@ -3188,11 +3249,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     /**
      * 選択された牌チェック
-     * 牌の数が13以下だった場合はfalse
+     * 牌の数が14以下だった場合はfalse
+     * 「指定しない」の項目を考慮して13ではなく14
      * @return {bool} true: ok / false: ng
      */
     chkSelectTilesList: function chkSelectTilesList() {
-      if (this.select_list.length !== this.my_tiles_length) {
+      if (this.select_list.length !== this.my_tiles_length + 1) {
         return false;
       }
 
@@ -3217,7 +3279,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
      * 持ち点チェック
      */
     chkHavePoint: function chkHavePoint() {
-      // 文字が含んでたらNaNが返る
+      // 空の場合は正常
+      if (!this.have_point) {
+        return true;
+      } // 文字が含んでたらNaNが返る
+
+
       if (!Number(this.have_point)) {
         return false;
       } // 文字列の場合の変換や小数点切り捨て
@@ -3308,23 +3375,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return _context2.abrupt("return", false);
 
               case 3:
-                return _context2.abrupt("return", false);
+                // return false
+                post_data = {
+                  tiles_id_list: sort_tiles_id_list,
+                  user_id: _this3.userId,
+                  station: _this3.select_station,
+                  direction: _this3.select_direction,
+                  answer_tiles: _this3.select_answer_tiles,
+                  dora_tiles: _this3.select_dora_tiles,
+                  round: _this3.select_round,
+                  have_point: _this3.have_point,
+                  commentary: _this3.commentary
+                };
+                _context2.next = 6;
+                return axios.post("/api/post_question", post_data);
 
-              case 7:
+              case 6:
                 response = _context2.sent;
 
                 if (!(response.status !== _until__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
-                  _context2.next = 10;
+                  _context2.next = 9;
                   break;
                 }
 
                 return _context2.abrupt("return", false);
 
-              case 10:
+              case 9:
                 // 問題一覧ページへ遷移
                 _this3.$router.push("/");
 
-              case 11:
+              case 10:
               case "end":
                 return _context2.stop();
             }
@@ -3356,7 +3436,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                   _this4.create_tiles_each_group();
 
-                case 6:
+                  _this4.addUnselect();
+
+                case 7:
                 case "end":
                   return _context3.stop();
               }
@@ -3779,7 +3861,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.question-tail[data-v-08527faf] {\n    float: left;\n    /* overflow: auto; */\n}\n.question-tail-list[data-v-08527faf] {\n    overflow:  auto;\n    margin-bottom: 10px;\n    display: inline-block;\n    text-align: left;\n}\n.tiles_list[data-v-08527faf] {\n    overflow: auto;\n}\n.image-mouse[data-v-08527faf] {\n    cursor: pointer;\n}\n.select-box[data-v-08527faf] {\n    width: 200px;\n}\n", ""]);
+exports.push([module.i, "\n.question-tail[data-v-08527faf] {\n    float: left;\n    /* overflow: auto; */\n}\n.question-tail-list[data-v-08527faf] {\n    overflow:  auto;\n    margin-bottom: 10px;\n    display: inline-block;\n    text-align: left;\n}\n.tiles_list[data-v-08527faf] {\n    overflow: auto;\n}\n.image-mouse[data-v-08527faf] {\n    cursor: pointer;\n}\n.select-box[data-v-08527faf] {\n    width: 70px;\n}\n", ""]);
 
 // exports
 
@@ -6796,345 +6878,364 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
-    {
-      staticClass: "mx-auto mt-5 text-center",
-      attrs: { elevation: "5", outlined: "", width: "1000px" },
-    },
+    "v-container",
     [
-      _c("v-card-text", [
-        _c(
-          "div",
-          { staticClass: "question-tail-list" },
-          [
-            _c(
-              "div",
-              { staticClass: "mb-3 tiles_list" },
-              _vm._l(_vm.manzu_list, function (tiles, index) {
-                return _c(
-                  "div",
-                  { key: index, staticClass: "question-tail" },
-                  [
-                    _c("v-img", {
-                      staticClass: "image-mouse",
-                      attrs: {
-                        src: tiles.mahjong_tiles,
-                        "max-height": "60",
-                        "max-width": "40",
-                      },
-                      on: {
-                        click: function ($event) {
-                          return _vm.click_select(tiles)
-                        },
-                      },
-                    }),
-                  ],
-                  1
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "mb-3 tiles_list" },
-              _vm._l(_vm.pinzu_list, function (tiles, index) {
-                return _c(
-                  "div",
-                  { key: index, staticClass: "question-tail" },
-                  [
-                    _c("v-img", {
-                      staticClass: "image-mouse",
-                      attrs: {
-                        src: tiles.mahjong_tiles,
-                        "max-height": "60",
-                        "max-width": "40",
-                      },
-                      on: {
-                        click: function ($event) {
-                          return _vm.click_select(tiles)
-                        },
-                      },
-                    }),
-                  ],
-                  1
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "mb-3 tiles_list" },
-              _vm._l(_vm.souzu_list, function (tiles, index) {
-                return _c(
-                  "div",
-                  { key: index, staticClass: "question-tail" },
-                  [
-                    _c("v-img", {
-                      staticClass: "image-mouse",
-                      attrs: {
-                        src: tiles.mahjong_tiles,
-                        "max-height": "60",
-                        "max-width": "40",
-                      },
-                      on: {
-                        click: function ($event) {
-                          return _vm.click_select(tiles)
-                        },
-                      },
-                    }),
-                  ],
-                  1
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "mb-10 tiles_list" },
-              _vm._l(_vm.jihai_list, function (tiles, index) {
-                return _c(
-                  "div",
-                  { key: index, staticClass: "question-tail" },
-                  [
-                    _c("v-img", {
-                      staticClass: "image-mouse",
-                      attrs: {
-                        src: tiles.mahjong_tiles,
-                        "max-height": "60",
-                        "max-width": "40",
-                      },
-                      on: {
-                        click: function ($event) {
-                          return _vm.click_select(tiles)
-                        },
-                      },
-                    }),
-                  ],
-                  1
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _vm._l(_vm.select_tiles_list, function (tiles, index) {
-              return _c(
-                "div",
-                { key: index, staticClass: "question-tail mr-1" },
-                [
-                  _c(
-                    "v-sheet",
-                    {
-                      attrs: {
-                        color: "grey darken-1",
-                        elevation: "1",
-                        height: "55",
-                        width: "40",
-                      },
-                    },
-                    [
-                      tiles.mahjong_tiles
-                        ? _c("v-img", {
-                            attrs: {
-                              src: tiles.mahjong_tiles,
-                              "max-height": "60",
-                              "max-width": "40",
-                            },
-                          })
-                        : _vm._e(),
-                    ],
-                    1
-                  ),
-                ],
-                1
-              )
-            }),
-          ],
-          2
-        ),
-      ]),
-      _vm._v(" "),
       _c(
-        "v-btn",
+        "v-card",
         {
-          attrs: { elevation: "5" },
-          on: {
-            click: function ($event) {
-              return _vm.sort_tiles()
-            },
-          },
-        },
-        [_vm._v("理牌する\n    ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "v-btn",
-        {
-          attrs: { elevation: "5" },
-          on: {
-            click: function ($event) {
-              return _vm.reset_tiles()
-            },
-          },
-        },
-        [_vm._v("リセット\n    ")]
-      ),
-      _vm._v(" "),
-      _c("v-divider", { staticClass: "mx-3 my-3" }),
-      _vm._v(" "),
-      _c(
-        "v-form",
-        {
-          on: {
-            submit: function ($event) {
-              $event.preventDefault()
-              return _vm.post_question.apply(null, arguments)
-            },
-          },
+          staticClass: "mx-auto mt-5 text-center",
+          attrs: { elevation: "5", outlined: "", width: "1000px" },
         },
         [
-          _c("v-select", {
-            staticClass: "select-box",
-            attrs: {
-              label: "局",
-              items: _vm.station_list,
-              "item-text": "station",
-              "item-value": "id",
-              dense: "",
-              outlined: "",
-            },
-            model: {
-              value: _vm.select_station,
-              callback: function ($$v) {
-                _vm.select_station = $$v
-              },
-              expression: "select_station",
-            },
-          }),
-          _vm._v(" "),
-          _c("v-select", {
-            staticClass: "select-box",
-            attrs: {
-              label: "自風",
-              items: _vm.direction_list,
-              "item-text": "direction",
-              "item-value": "id",
-              dense: "",
-              outlined: "",
-            },
-            model: {
-              value: _vm.select_direction,
-              callback: function ($$v) {
-                _vm.select_direction = $$v
-              },
-              expression: "select_direction",
-            },
-          }),
-          _vm._v(" "),
-          _c("v-select", {
-            staticClass: "select-box",
-            attrs: {
-              items: _vm.round_list,
-              "item-text": "round",
-              "item-value": "id",
-              label: "巡目",
-              dense: "",
-              outlined: "",
-            },
-            model: {
-              value: _vm.select_round,
-              callback: function ($$v) {
-                _vm.select_round = $$v
-              },
-              expression: "select_round",
-            },
-          }),
-          _vm._v(" "),
-          _c("v-select", {
-            staticClass: "select-box",
-            attrs: {
-              items: _vm.select_list,
-              "item-text": "tiles_name",
-              "item-value": "id",
-              label: "ドラ",
-              dense: "",
-              outlined: "",
-            },
-            model: {
-              value: _vm.select_dora_tiles,
-              callback: function ($$v) {
-                _vm.select_dora_tiles = $$v
-              },
-              expression: "select_dora_tiles",
-            },
-          }),
-          _vm._v(" "),
-          _c("v-text-field", {
-            ref: "count",
-            attrs: {
-              label: "持ち点",
-              type: "number",
-              max: "100000",
-              min: "0",
-              step: "1000",
-            },
-            model: {
-              value: _vm.have_point,
-              callback: function ($$v) {
-                _vm.have_point = _vm._n($$v)
-              },
-              expression: "have_point",
-            },
-          }),
-          _vm._v(" "),
-          _c("v-chip", { attrs: { color: "red" } }, [
-            _vm._v(
-              "\n            ユーザー名 : " +
-                _vm._s(_vm.username) +
-                "\n        "
+          _c("v-card-text", [
+            _c(
+              "div",
+              { staticClass: "question-tail-list" },
+              [
+                _c(
+                  "div",
+                  { staticClass: "mb-3 tiles_list" },
+                  _vm._l(_vm.manzu_list, function (tiles, index) {
+                    return _c(
+                      "div",
+                      { key: index, staticClass: "question-tail" },
+                      [
+                        _c("v-img", {
+                          staticClass: "image-mouse",
+                          attrs: {
+                            src: tiles.mahjong_tiles,
+                            "max-height": "60",
+                            "max-width": "40",
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.click_select(tiles)
+                            },
+                          },
+                        }),
+                      ],
+                      1
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mb-3 tiles_list" },
+                  _vm._l(_vm.pinzu_list, function (tiles, index) {
+                    return _c(
+                      "div",
+                      { key: index, staticClass: "question-tail" },
+                      [
+                        _c("v-img", {
+                          staticClass: "image-mouse",
+                          attrs: {
+                            src: tiles.mahjong_tiles,
+                            "max-height": "60",
+                            "max-width": "40",
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.click_select(tiles)
+                            },
+                          },
+                        }),
+                      ],
+                      1
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mb-3 tiles_list" },
+                  _vm._l(_vm.souzu_list, function (tiles, index) {
+                    return _c(
+                      "div",
+                      { key: index, staticClass: "question-tail" },
+                      [
+                        _c("v-img", {
+                          staticClass: "image-mouse",
+                          attrs: {
+                            src: tiles.mahjong_tiles,
+                            "max-height": "60",
+                            "max-width": "40",
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.click_select(tiles)
+                            },
+                          },
+                        }),
+                      ],
+                      1
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mb-10 tiles_list" },
+                  _vm._l(_vm.jihai_list, function (tiles, index) {
+                    return _c(
+                      "div",
+                      { key: index, staticClass: "question-tail" },
+                      [
+                        _c("v-img", {
+                          staticClass: "image-mouse",
+                          attrs: {
+                            src: tiles.mahjong_tiles,
+                            "max-height": "60",
+                            "max-width": "40",
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.click_select(tiles)
+                            },
+                          },
+                        }),
+                      ],
+                      1
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.select_tiles_list, function (tiles, index) {
+                  return _c(
+                    "div",
+                    { key: index, staticClass: "question-tail mr-1" },
+                    [
+                      _c(
+                        "v-sheet",
+                        {
+                          attrs: {
+                            color: "grey darken-1",
+                            elevation: "1",
+                            height: "55",
+                            width: "40",
+                          },
+                        },
+                        [
+                          tiles.mahjong_tiles
+                            ? _c("v-img", {
+                                attrs: {
+                                  src: tiles.mahjong_tiles,
+                                  "max-height": "60",
+                                  "max-width": "40",
+                                },
+                              })
+                            : _vm._e(),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  )
+                }),
+              ],
+              2
             ),
           ]),
           _vm._v(" "),
-          _c("v-select", {
-            staticClass: "select-box",
-            attrs: {
-              items: _vm.select_list,
-              "item-text": "tiles_name",
-              "item-value": "id",
-              label: "回答の牌",
-              dense: "",
-              outlined: "",
-              required: "",
-            },
-            model: {
-              value: _vm.select_answer_tiles,
-              callback: function ($$v) {
-                _vm.select_answer_tiles = $$v
+          _c(
+            "v-btn",
+            {
+              attrs: { elevation: "5" },
+              on: {
+                click: function ($event) {
+                  return _vm.sort_tiles()
+                },
               },
-              expression: "select_answer_tiles",
             },
-          }),
-          _vm._v(" "),
-          _c("v-textarea", {
-            attrs: { width: "500px", solo: "", label: "解説", elevation: "5" },
-            model: {
-              value: _vm.commentary,
-              callback: function ($$v) {
-                _vm.commentary = $$v
-              },
-              expression: "commentary",
-            },
-          }),
+            [_vm._v("理牌する\n        ")]
+          ),
           _vm._v(" "),
           _c(
-            "v-card-actions",
+            "v-btn",
+            {
+              attrs: { elevation: "5" },
+              on: {
+                click: function ($event) {
+                  return _vm.reset_tiles()
+                },
+              },
+            },
+            [_vm._v("リセット\n        ")]
+          ),
+          _vm._v(" "),
+          _c("v-divider", { staticClass: "mx-3 my-3" }),
+          _vm._v(" "),
+          _c(
+            "v-form",
+            {
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.post_question.apply(null, arguments)
+                },
+              },
+            },
             [
               _c(
-                "v-btn",
-                { attrs: { type: "submit", block: "", elevation: "2" } },
-                [_vm._v("問題を投稿する\n            ")]
+                "div",
+                { staticStyle: { display: "flex" } },
+                [
+                  _c("v-select", {
+                    staticClass: "select-box",
+                    attrs: {
+                      label: "局",
+                      items: _vm.station_list,
+                      "item-text": "station",
+                      "item-value": "id",
+                      dense: "",
+                      outlined: "",
+                    },
+                    model: {
+                      value: _vm.select_station,
+                      callback: function ($$v) {
+                        _vm.select_station = $$v
+                      },
+                      expression: "select_station",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("v-select", {
+                    staticClass: "select-box",
+                    attrs: {
+                      label: "自風",
+                      items: _vm.direction_list,
+                      "item-text": "direction",
+                      "item-value": "id",
+                      dense: "",
+                      outlined: "",
+                    },
+                    model: {
+                      value: _vm.select_direction,
+                      callback: function ($$v) {
+                        _vm.select_direction = $$v
+                      },
+                      expression: "select_direction",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("v-select", {
+                    staticClass: "select-box",
+                    attrs: {
+                      items: _vm.round_list,
+                      "item-text": "round",
+                      "item-value": "id",
+                      label: "巡目",
+                      dense: "",
+                      outlined: "",
+                    },
+                    model: {
+                      value: _vm.select_round,
+                      callback: function ($$v) {
+                        _vm.select_round = $$v
+                      },
+                      expression: "select_round",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("v-select", {
+                    staticClass: "select-box",
+                    attrs: {
+                      items: _vm.select_list,
+                      "item-text": "tiles_name",
+                      "item-value": "id",
+                      label: "ドラ",
+                      dense: "",
+                      outlined: "",
+                    },
+                    model: {
+                      value: _vm.select_dora_tiles,
+                      callback: function ($$v) {
+                        _vm.select_dora_tiles = $$v
+                      },
+                      expression: "select_dora_tiles",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    ref: "count",
+                    staticClass: "select-box",
+                    attrs: {
+                      label: "持ち点",
+                      type: "number",
+                      max: "100000",
+                      min: "0",
+                      step: "1000",
+                    },
+                    model: {
+                      value: _vm.have_point,
+                      callback: function ($$v) {
+                        _vm.have_point = _vm._n($$v)
+                      },
+                      expression: "have_point",
+                    },
+                  }),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-chip", { attrs: { color: "red" } }, [
+                _vm._v(
+                  "\n                    ユーザー名 : " +
+                    _vm._s(_vm.username) +
+                    "\n                "
+                ),
+              ]),
+              _vm._v(" "),
+              _c("v-select", {
+                staticStyle: { width: "200px" },
+                attrs: {
+                  items: _vm.select_list,
+                  "item-text": "tiles_name",
+                  "item-value": "id",
+                  label: "回答の牌",
+                  dense: "",
+                  outlined: "",
+                  required: "",
+                },
+                model: {
+                  value: _vm.select_answer_tiles,
+                  callback: function ($$v) {
+                    _vm.select_answer_tiles = $$v
+                  },
+                  expression: "select_answer_tiles",
+                },
+              }),
+              _vm._v(" "),
+              _c("v-textarea", {
+                attrs: {
+                  width: "500px",
+                  solo: "",
+                  label: "解説",
+                  elevation: "5",
+                },
+                model: {
+                  value: _vm.commentary,
+                  callback: function ($$v) {
+                    _vm.commentary = $$v
+                  },
+                  expression: "commentary",
+                },
+              }),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-btn",
+                    { attrs: { type: "submit", block: "", elevation: "2" } },
+                    [_vm._v("問題を投稿する\n                    ")]
+                  ),
+                ],
+                1
               ),
             ],
             1
@@ -71549,7 +71650,6 @@ var mutations = {
   setContent: function setContent(state, _ref) {
     var content = _ref.content,
         timeout = _ref.timeout;
-    console.log(content, timeout);
     state.content = content;
     state.flag = true;
 

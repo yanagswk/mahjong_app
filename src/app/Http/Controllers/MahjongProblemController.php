@@ -207,12 +207,16 @@ class MahjongProblemController extends Controller
             'commentary'
         ]);
 
-        \Log::debug($only_request);
-
         $user_id = $request->input('user_id');
 
         if (Auth::id() !== $user_id) {
             return false;
+        }
+
+        foreach ($only_request as $param => $val) {
+            if ($val === MahjongProblem::Unselected) {
+                $only_request[$param] = NULL;
+            }
         }
 
         // 各パラメーターがマスターデータに存在するか
@@ -244,8 +248,6 @@ class MahjongProblemController extends Controller
                 'description' => $only_request['commentary'],
                 'publish' => true,
             ];
-
-            \Log::debug($data);
 
             $mahjong_problem = new MahjongProblem;
             $mahjong_problem->fill($data)->save();
