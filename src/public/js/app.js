@@ -2710,6 +2710,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2764,16 +2773,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return _this.$store.dispatch("auth/register", _this.registerForm);
+                if (_this.chkRegisterValidation()) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return", false);
 
               case 2:
+                _context.next = 4;
+                return _this.$store.dispatch("auth/register", _this.registerForm);
+
+              case 4:
                 // trueの場合のみトップページへ遷移
                 if (_this.apiStatus) {
                   _this.$router.push("/");
                 }
 
-              case 3:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -2793,10 +2810,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
-                return _this2.$store.dispatch("auth/login", _this2.loginForm);
+                if (_this2.chkLoginValidation()) {
+                  _context2.next = 2;
+                  break;
+                }
+
+                return _context2.abrupt("return", false);
 
               case 2:
+                _context2.next = 4;
+                return _this2.$store.dispatch("auth/login", _this2.loginForm);
+
+              case 4:
                 if (_this2.apiStatus) {
                   _this2.$store.dispatch('message/ADD_MESSAGES', {
                     content: "ログイン",
@@ -2808,7 +2833,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   _this2.$router.push("/");
                 }
 
-              case 3:
+              case 5:
               case "end":
                 return _context2.stop();
             }
@@ -2821,11 +2846,71 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
      * エラーメッセージをクリアする
      */
     clearError: function clearError() {
-      this.$store.commit("auth/setLoginErrorMessages", null), this.$store.commit("auth/setRegisterErrorMessages", null);
+      this.$store.commit("auth/setLoginErrorMessages", null);
+      this.$store.commit("auth/setRegisterErrorMessages", null);
+    },
+
+    /**
+     * loginバリデーションチェック
+     * TODO: 空チェック以外もやる (https://qiita.com/kj455/items/8e6b5fe3755cab7ef73e)
+     * TODO:  this.$store.commitするときに、一気に配列に入れるようにする。必須項目しかメッセージが出なくなる。
+     * @return {bool} true:成功 / false: 失敗
+     */
+    chkLoginValidation: function chkLoginValidation() {
+      var chkEmailMessage = this.loginForm.email ? '' : 'メールアドレスは必須です';
+      var chkPasswordMessage = this.loginForm.password ? '' : 'パスワードは必須です'; // 空欄チェック
+
+      if (chkEmailMessage || chkPasswordMessage) {
+        this.$store.commit('auth/setLoginErrorMessages', {
+          email: [chkEmailMessage],
+          password: [chkPasswordMessage]
+        });
+        return false;
+      } // // メールアドレス : 正規表現
+      // const mailRegexp = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
+      // const mailChk = mailRegexp.test(this.loginForm.email);
+      // const chkEmailRegMessage = mailChk ? '' : '正しいメールアドレスを入力してください';
+      // // パスワード : 半角英数字8-15文字の正規表現
+      // const passwordRegexp = /^(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,15}$/i;
+      // const passwordChk = passwordRegexp.test(this.loginForm.password);
+      // const chkPasswordRegMessage = passwordChk ? '' : '半角英数字8文字から15文字で入力してください';
+      // if (chkEmailRegMessage || chkPasswordRegMessage) {
+      //     this.$store.commit('auth/setLoginErrorMessages', {
+      //         email: [chkEmailRegMessage],
+      //         password: [chkPasswordRegMessage],
+      //     })
+      //     return false;
+      // }
+
+
+      return true;
+    },
+
+    /**
+     * registerバリデーションチェック
+     * TODO: 空欄チェック以外もやる
+     */
+    chkRegisterValidation: function chkRegisterValidation() {
+      var chkNameMessage = this.registerForm.name ? '' : '名前は必須です';
+      var chkEmailMessage = this.registerForm.email ? '' : 'メールアドレスは必須です';
+      var chkPasswordMessage = this.registerForm.password ? '' : 'パスワードは必須です';
+      var chkPasswordConfMessage = this.registerForm.password_confirmation ? '' : 'パスワード確認は必須です'; // 空欄チェック
+
+      if (chkNameMessage || chkEmailMessage || chkPasswordMessage || chkPasswordConfMessage) {
+        this.$store.commit('auth/setRegisterErrorMessages', {
+          name: [chkNameMessage],
+          email: [chkEmailMessage],
+          password: [chkPasswordMessage],
+          password_confirmation: [chkPasswordConfMessage]
+        });
+        return false;
+      }
+
+      return true;
     }
   },
   created: function created() {
-    // 表示するタイイングでエラーメッセージをクリア
+    // 表示するタイミングでエラーメッセージをクリア
     this.clearError();
   }
 });
@@ -7781,6 +7866,32 @@ var render = function () {
                                         "registerForm.password_confirmation",
                                     },
                                   }),
+                                  _vm._v(" "),
+                                  _vm.registerErrors
+                                    ? _c(
+                                        "div",
+                                        _vm._l(
+                                          _vm.registerErrors.password,
+                                          function (msg) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                key: msg,
+                                                staticStyle: { color: "red" },
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                        " +
+                                                    _vm._s(msg) +
+                                                    "\n                                    "
+                                                ),
+                                              ]
+                                            )
+                                          }
+                                        ),
+                                        0
+                                      )
+                                    : _vm._e(),
                                 ],
                                 1
                               ),
@@ -72497,7 +72608,6 @@ var actions = {
               context.commit("setApiStatus", false); // バリデーションエラーの場合
 
               if (response.status === _until__WEBPACK_IMPORTED_MODULE_1__["UNPROCESSABLE_ENTITY"]) {
-                console.log(response.data.errors);
                 context.commit("setLoginErrorMessages", response.data.errors);
               } else {
                 // 別のモジュールのミューテーションをcommitする場合は第三引数に{root:true}を追加する

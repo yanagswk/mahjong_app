@@ -124,6 +124,15 @@
                                         type="password"
                                         v-model="registerForm.password_confirmation"
                                     />
+                                    <div v-if="registerErrors">
+                                        <div
+                                            v-for="msg in registerErrors.password"
+                                            :key="msg"
+                                            style="color: red"
+                                        >
+                                            {{ msg }}
+                                        </div>
+                                    </div>
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-spacer />
@@ -178,26 +187,15 @@ export default {
              */
             registerErrors: (state) => state.auth.registerErrorMessages,
         }),
-        // /**
-        //  * ストアのapi判定を返す
-        //  * @return {bool}
-        //  */
-        // apiStatus() {
-        //     return this.$store.state.auth.apiStatus;
-        // },
-        // /**
-        //  * ストアのログインエラーメッセージを返す
-        //  * @return {string}
-        //  */
-        // loginErrors() {
-        //     return this.$store.state.auth.loginErrorMessages;
-        // },
     },
     methods: {
         /**
          * 会員登録api
          */
         async register() {
+            if (!this.chkRegisterValidation()) {
+                return false;
+            }
             // authストアのregisterアクションを呼び出す
             await this.$store.dispatch("auth/register", this.registerForm);
             // trueの場合のみトップページへ遷移
@@ -209,6 +207,9 @@ export default {
          * ログインapi
          */
         async login() {
+            if (!this.chkLoginValidation()) {
+                return false;
+            }
             // authストアのloginアクションを呼び出す
             await this.$store.dispatch("auth/login", this.loginForm);
             if (this.apiStatus) {
@@ -227,12 +228,70 @@ export default {
          * エラーメッセージをクリアする
          */
         clearError() {
-            this.$store.commit("auth/setLoginErrorMessages", null),
+            this.$store.commit("auth/setLoginErrorMessages", null)
             this.$store.commit("auth/setRegisterErrorMessages", null);
         },
+        /**
+         * loginバリデーションチェック
+         * TODO: 空チェック以外もやる (https://qiita.com/kj455/items/8e6b5fe3755cab7ef73e)
+         * TODO:  this.$store.commitするときに、一気に配列に入れるようにする。必須項目しかメッセージが出なくなる。
+         * @return {bool} true:成功 / false: 失敗
+         */
+        chkLoginValidation() {
+            const chkEmailMessage = this.loginForm.email ? '' : 'メールアドレスは必須です';
+            const chkPasswordMessage = this.loginForm.password ? '' : 'パスワードは必須です';
+            // 空欄チェック
+            if (chkEmailMessage || chkPasswordMessage) {
+                this.$store.commit('auth/setLoginErrorMessages', {
+                    email: [chkEmailMessage],
+                    password: [chkPasswordMessage],
+                })
+                return false;
+            }
+
+            // // メールアドレス : 正規表現
+            // const mailRegexp = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
+            // const mailChk = mailRegexp.test(this.loginForm.email);
+            // const chkEmailRegMessage = mailChk ? '' : '正しいメールアドレスを入力してください';
+            // // パスワード : 半角英数字8-15文字の正規表現
+            // const passwordRegexp = /^(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,15}$/i;
+            // const passwordChk = passwordRegexp.test(this.loginForm.password);
+            // const chkPasswordRegMessage = passwordChk ? '' : '半角英数字8文字から15文字で入力してください';
+
+            // if (chkEmailRegMessage || chkPasswordRegMessage) {
+            //     this.$store.commit('auth/setLoginErrorMessages', {
+            //         email: [chkEmailRegMessage],
+            //         password: [chkPasswordRegMessage],
+            //     })
+            //     return false;
+            // }
+
+            return true;
+        },
+        /**
+         * registerバリデーションチェック
+         * TODO: 空欄チェック以外もやる
+         */
+        chkRegisterValidation() {
+            const chkNameMessage = this.registerForm.name ? '' : '名前は必須です';
+            const chkEmailMessage = this.registerForm.email ? '' : 'メールアドレスは必須です';
+            const chkPasswordMessage = this.registerForm.password ? '' : 'パスワードは必須です';
+            const chkPasswordConfMessage = this.registerForm.password_confirmation ? '' : 'パスワード確認は必須です';
+            // 空欄チェック
+            if (chkNameMessage || chkEmailMessage || chkPasswordMessage || chkPasswordConfMessage) {
+                this.$store.commit('auth/setRegisterErrorMessages', {
+                    name: [chkNameMessage],
+                    email: [chkEmailMessage],
+                    password: [chkPasswordMessage],
+                    password_confirmation: [chkPasswordConfMessage],
+                })
+                return false;
+            }
+            return true;
+        }
     },
     created() {
-        // 表示するタイイングでエラーメッセージをクリア
+        // 表示するタイミングでエラーメッセージをクリア
         this.clearError();
     },
 };
