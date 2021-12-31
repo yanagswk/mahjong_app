@@ -3569,45 +3569,93 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }, _callee2);
       }))();
+    },
+
+    /**
+     * データセット
+     */
+    setData: function setData() {
+      this.create_round_list();
+      this.create_tiles_name_list();
+      this.create_select_tiles_list();
+      this.create_tiles_each_group();
+      this.addUnselect();
     }
   },
-  watch: {
-    // ページが切り替わった時に実行
-    $route: {
-      handler: function handler() {
-        var _this4 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-            while (1) {
-              switch (_context3.prev = _context3.next) {
-                case 0:
-                  _context3.next = 2;
-                  return _this4.get_question_situation();
+  /**
+   * ナビゲーション前に取得
+   */
+  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return axios.get("/api/post_question");
 
-                case 2:
-                  _this4.create_round_list();
+            case 2:
+              response = _context4.sent;
 
-                  _this4.create_tiles_name_list();
-
-                  _this4.create_select_tiles_list();
-
-                  _this4.create_tiles_each_group();
-
-                  _this4.addUnselect();
-
-                case 7:
-                case "end":
-                  return _context3.stop();
+              if (!(response.status !== _until__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                _context4.next = 5;
+                break;
               }
-            }
-          }, _callee3);
-        }))();
-      },
-      immediate: true // コンポーネントが生成されたタイミングでも実行
 
-    }
-  }
+              return _context4.abrupt("return", false);
+
+            case 5:
+              next( /*#__PURE__*/function () {
+                var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(vm) {
+                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+                    while (1) {
+                      switch (_context3.prev = _context3.next) {
+                        case 0:
+                          vm.station_list = response.data.station_list;
+                          vm.direction_list = response.data.direction_list;
+                          vm.tiles_list = response.data.tiles_name_list;
+                          vm.round = response.data.round;
+                          vm.tiles_group_list = response.data.tiles_group_list;
+                          vm.setData();
+                          next();
+
+                        case 7:
+                        case "end":
+                          return _context3.stop();
+                      }
+                    }
+                  }, _callee3);
+                }));
+
+                return function (_x) {
+                  return _ref.apply(this, arguments);
+                };
+              }());
+
+            case 6:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }))();
+  } // watch: {
+  //     // ページが切り替わった時に実行
+  //     $route: {
+  //         async handler() {
+  //             await this.get_question_situation();
+  //             this.create_round_list();
+  //             this.create_tiles_name_list();
+  //             this.create_select_tiles_list();
+  //             this.create_tiles_each_group();
+  //             this.addUnselect()
+  //         },
+  //         immediate: true, // コンポーネントが生成されたタイミングでも実行
+  //     },
+  // },
+
 });
 
 /***/ }),

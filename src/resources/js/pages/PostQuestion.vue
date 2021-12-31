@@ -536,21 +536,51 @@ export default {
             this.$router.push("/");
 
         },
+        /**
+         * データセット
+         */
+        setData() {
+            this.create_round_list();
+            this.create_tiles_name_list();
+            this.create_select_tiles_list();
+            this.create_tiles_each_group();
+            this.addUnselect()
+        }
     },
-    watch: {
-        // ページが切り替わった時に実行
-        $route: {
-            async handler() {
-                await this.get_question_situation();
-                this.create_round_list();
-                this.create_tiles_name_list();
-                this.create_select_tiles_list();
-                this.create_tiles_each_group();
-                this.addUnselect()
-            },
-            immediate: true, // コンポーネントが生成されたタイミングでも実行
-        },
+    /**
+     * ナビゲーション前に取得
+     */
+    async beforeRouteEnter(to, from, next) {
+        // 問題投稿api
+        const response = await axios.get("/api/post_question");
+        if (response.status !== OK) {
+            return false;
+        }
+        next(async (vm) => {
+            vm.station_list = response.data.station_list;
+            vm.direction_list = response.data.direction_list;
+            vm.tiles_list = response.data.tiles_name_list;
+            vm.round = response.data.round;
+            vm.tiles_group_list = response.data.tiles_group_list;
+            vm.setData();
+            next();
+        });
+
     },
+    // watch: {
+    //     // ページが切り替わった時に実行
+    //     $route: {
+    //         async handler() {
+    //             await this.get_question_situation();
+    //             this.create_round_list();
+    //             this.create_tiles_name_list();
+    //             this.create_select_tiles_list();
+    //             this.create_tiles_each_group();
+    //             this.addUnselect()
+    //         },
+    //         immediate: true, // コンポーネントが生成されたタイミングでも実行
+    //     },
+    // },
 }
 </script>
 
