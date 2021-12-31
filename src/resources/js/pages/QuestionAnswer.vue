@@ -1,5 +1,4 @@
 <template>
-
     <v-card elevation="5" outlined width="1000px" class="mx-auto mt-5 text-center">
         <v-card-title class="card-title-list">
             <div class="question-number">
@@ -61,6 +60,12 @@
                 ></v-img>
             </template>
         </v-data-table>
+
+        <v-card-text>
+                <v-btn to="/">
+                    問題一覧へ戻る
+                </v-btn>
+        </v-card-text>
 
     </v-card>
 

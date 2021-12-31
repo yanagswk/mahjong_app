@@ -3698,6 +3698,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -8562,6 +8567,16 @@ var render = function () {
           },
         ]),
       }),
+      _vm._v(" "),
+      _c(
+        "v-card-text",
+        [
+          _c("v-btn", { attrs: { to: "/" } }, [
+            _vm._v("\n                問題一覧へ戻る\n            "),
+          ]),
+        ],
+        1
+      ),
     ],
     1
   )
