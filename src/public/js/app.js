@@ -3774,6 +3774,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3802,6 +3806,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         sortable: false
       }]
     };
+  },
+  computed: {
+    loading: function loading() {
+      return this.$store.getters["loading/loading"];
+    }
   },
   methods: {
     /**
@@ -3867,31 +3876,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     }
   },
-  watch: {
-    // ページが切り替わった時に実行
-    $route: {
-      handler: function handler() {
-        var _this2 = this;
+  // watch: {
+  //     // ページが切り替わった時に実行
+  //     $route: {
+  //         async handler() {
+  //             await this.getMahjongProblemAnswer();
+  //         },
+  //         immediate: true, // コンポーネントが生成されたタイミングでも実行
+  //     },
+  // },
+  mounted: function mounted() {
+    var _this2 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  _context2.next = 2;
-                  return _this2.getMahjongProblemAnswer();
-
-                case 2:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2);
-        }))();
-      },
-      immediate: true // コンポーネントが生成されたタイミングでも実行
-
-    }
+    // ローディング開始
+    this.$store.dispatch('loading/startLoad').then(function () {
+      return _this2.getMahjongProblemAnswer();
+    }) // ローディング終了
+    .then(function () {
+      return _this2.$store.dispatch('loading/endLoad');
+    });
   }
 });
 
@@ -8587,25 +8590,63 @@ var render = function () {
       _vm._v(" "),
       _c("v-divider"),
       _vm._v(" "),
-      _c("v-card-text", [
-        _c(
-          "div",
-          { staticClass: "question-tail-list" },
-          _vm._l(_vm.problem.problem_tiles, function (tiles, index) {
-            return _c(
-              "div",
-              { key: index, staticClass: "question-tail" },
-              [
-                _c("v-img", {
-                  attrs: { src: tiles, "max-height": "60", "max-width": "40" },
-                }),
-              ],
-              1
-            )
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.loading,
+              expression: "loading",
+            },
+          ],
+          staticClass: "loaders",
+        },
+        [
+          _c("vue-loaders", {
+            attrs: { name: "pacman", color: "red", scale: "1" },
           }),
-          0
-        ),
-      ]),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card-text",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.loading,
+              expression: "!loading",
+            },
+          ],
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "question-tail-list" },
+            _vm._l(_vm.problem.problem_tiles, function (tiles, index) {
+              return _c(
+                "div",
+                { key: index, staticClass: "question-tail" },
+                [
+                  _c("v-img", {
+                    attrs: {
+                      src: tiles,
+                      "max-height": "60",
+                      "max-width": "40",
+                    },
+                  }),
+                ],
+                1
+              )
+            }),
+            0
+          ),
+        ]
+      ),
       _vm._v(" "),
       _c("v-data-table", {
         staticClass: "elevation-1",

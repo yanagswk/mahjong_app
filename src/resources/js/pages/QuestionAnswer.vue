@@ -26,7 +26,11 @@
 
         <v-divider></v-divider>
 
-        <v-card-text>
+        <div class="loaders" v-show="loading">
+            <vue-loaders name="pacman" color="red" scale="1"></vue-loaders>
+        </div>
+
+        <v-card-text v-show="!loading">
             <div class="question-tail-list">
                 <div v-for="(tiles, index) in problem.problem_tiles" :key="index" class="question-tail">
                     <v-img
@@ -85,6 +89,11 @@ export default {
             {text: 'パーセント', value: 'answer_rate', sortable: false,},
         ],
     }),
+    computed: {
+        loading() {
+            return this.$store.getters["loading/loading"];
+        },
+    },
     methods: {
         /**
          * 問題取得やユーザーの回答を取得するapi
@@ -120,14 +129,21 @@ export default {
             }
         }
     },
-    watch: {
-        // ページが切り替わった時に実行
-        $route: {
-            async handler() {
-                await this.getMahjongProblemAnswer();
-            },
-            immediate: true, // コンポーネントが生成されたタイミングでも実行
-        },
+    // watch: {
+    //     // ページが切り替わった時に実行
+    //     $route: {
+    //         async handler() {
+    //             await this.getMahjongProblemAnswer();
+    //         },
+    //         immediate: true, // コンポーネントが生成されたタイミングでも実行
+    //     },
+    // },
+    mounted() {
+        // ローディング開始
+        this.$store.dispatch('loading/startLoad')
+            .then(()=>this.getMahjongProblemAnswer())
+            // ローディング終了
+            .then(()=>this.$store.dispatch('loading/endLoad'));
     },
 }
 </script>
