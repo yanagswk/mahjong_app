@@ -72429,6 +72429,11 @@ var routes = [{
   beforeEnter: function beforeEnter(to, from, next) {
     // ログインしていなかったらログイン画面へ
     if (!_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters['auth/check']) {
+      _store__WEBPACK_IMPORTED_MODULE_7__["default"].dispatch('message/ADD_MESSAGES', {
+        content: "問題を投稿するにはログインが必要です",
+        color: "red",
+        timeout: "3000"
+      });
       next('/login');
     } else {
       next();

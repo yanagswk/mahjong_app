@@ -37,6 +37,11 @@ const routes = [
         beforeEnter(to, from, next) {
             // ログインしていなかったらログイン画面へ
             if (!store.getters['auth/check']) {
+                store.dispatch('message/ADD_MESSAGES', {
+                    content: "問題を投稿するにはログインが必要です",
+                    color: "red",
+                    timeout: "3000"
+                });
                 next('/login');
             } else {
                 next();
