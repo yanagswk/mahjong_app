@@ -37,11 +37,14 @@ import router from "./router";
 import store from './store';
 import App from "./App.vue";
 import Vuetify from "vuetify";
+import VueLoaders from 'vue-loaders';
+import 'vue-loaders/dist/vue-loaders.css';
 import "vuetify/dist/vuetify.min.css";
 import "@mdi/font/css/materialdesignicons.css";     //<v-icon>アイコンを使えるように
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 Vue.use(Vuetify);
+Vue.use(VueLoaders);
 
 const createApp = async () => {
     await store.dispatch('auth/currentUser');

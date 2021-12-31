@@ -31,6 +31,7 @@
     "dependencies": {
         "material-design-icons-iconfont": "^6.1.1",
         "uuid": "^8.3.2",
+        "vue-loaders": "^3.3.0",
         "vue-router": "^3.5.3",
         "vuetify": "^2.6.0",
         "vuex": "^3.6.2"
