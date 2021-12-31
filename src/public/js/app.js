@@ -3136,6 +3136,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3185,7 +3186,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       // 選択されたドラの牌
       select_round: '',
       // 選択された巡目
-      select_list: [] // 選択された牌(falseなし)
+      select_list: [],
+      // 選択された牌(falseなし)
+      validation_flag: true // バリデーションチェックのフラグ
 
     };
   },
@@ -3372,12 +3375,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     /**
      *  バリデーションチェック
+     * @return {bool} true:チェックOK / false:チェックNG
      */
     validation_check: function validation_check() {
-      // 選択牌チェック
+      // 手牌チェック
       if (!this.chkSelectTilesList()) {
-        console.log('選択エラー');
-        return false;
+        // エラーメッセージ
+        this.$store.dispatch('message/ADD_MESSAGES', {
+          content: "手牌を完成させてください",
+          color: "red",
+          timeout: "3000"
+        });
+        this.validation_flag = false;
       } // 局チェック
       // 自風チェック
       // 巡目チェック
@@ -3386,23 +3395,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
       if (!this.chkHavePoint()) {
-        console.log('持ち点エラー');
-        return false;
+        // エラーメッセージ
+        this.$store.dispatch('message/ADD_MESSAGES', {
+          content: "数字で入力してください",
+          color: "red",
+          timeout: "3000"
+        });
+        this.validation_flag = false;
       } // 回答の牌チェック
 
 
       if (!this.chkSelectAnswerTiles()) {
-        console.log('回答エラー');
-        return false;
+        // エラーメッセージ
+        this.$store.dispatch('message/ADD_MESSAGES', {
+          content: "回答を選択してください",
+          color: "red",
+          timeout: "3000"
+        });
+        this.validation_flag = false;
       } // 解説チェック
 
 
       if (!this.chkCommentary()) {
-        console.log('解説エラー');
-        return false;
+        // エラーメッセージ
+        this.$store.dispatch('message/ADD_MESSAGES', {
+          content: "解説エラー",
+          color: "red",
+          timeout: "3000"
+        });
+        this.validation_flag = false;
       }
 
-      return true;
+      return this.validation_flag;
     },
 
     /**
@@ -3533,7 +3557,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return _context2.abrupt("return", false);
 
               case 3:
-                // return false
                 post_data = {
                   tiles_id_list: sort_tiles_id_list,
                   user_id: _this3.userId,
@@ -8379,6 +8402,17 @@ var render = function () {
                       max: "100000",
                       min: "0",
                       step: "1000",
+                    },
+                    on: {
+                      keydown: function ($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          $event.keyCode !== 69
+                        ) {
+                          return null
+                        }
+                        $event.preventDefault()
+                      },
                     },
                     model: {
                       value: _vm.have_point,

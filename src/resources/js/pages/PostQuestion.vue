@@ -144,6 +144,7 @@
                         ref="count"
                         label="持ち点"
                         v-model.number="have_point"
+                        @keydown.69.prevent
                         type="number"
                         max="100000"
                         min="0"
@@ -224,7 +225,8 @@ export default {
             select_answer_tiles: '',    // 選択された回答の牌
             select_dora_tiles: '',      // 選択されたドラの牌
             select_round: '',            // 選択された巡目
-            select_list: []                // 選択された牌(falseなし)
+            select_list: [],                // 選択された牌(falseなし)
+            validation_flag: true      // バリデーションチェックのフラグ
         }
     },
     computed: {
@@ -397,12 +399,18 @@ export default {
         },
         /**
          *  バリデーションチェック
+         * @return {bool} true:チェックOK / false:チェックNG
          */
         validation_check() {
-            // 選択牌チェック
+            // 手牌チェック
             if (!this.chkSelectTilesList()) {
-                console.log('選択エラー')
-                return false;
+                // エラーメッセージ
+                this.$store.dispatch('message/ADD_MESSAGES', {
+                    content: "手牌を完成させてください",
+                    color: "red",
+                    timeout: "3000"
+                });
+                this.validation_flag = false;
             }
             // 局チェック
 
@@ -414,24 +422,37 @@ export default {
 
             // 持ち点チェック
             if (!this.chkHavePoint()) {
-                console.log('持ち点エラー')
-                return false;
+                // エラーメッセージ
+                this.$store.dispatch('message/ADD_MESSAGES', {
+                    content: "数字で入力してください",
+                    color: "red",
+                    timeout: "3000"
+                });
+                this.validation_flag = false;
             }
 
             // 回答の牌チェック
             if (!this.chkSelectAnswerTiles()) {
-                console.log('回答エラー')
-                return false
+                // エラーメッセージ
+                this.$store.dispatch('message/ADD_MESSAGES', {
+                    content: "回答を選択してください",
+                    color: "red",
+                    timeout: "3000"
+                });
+                this.validation_flag = false;
             }
 
             // 解説チェック
             if (!this.chkCommentary()) {
-                console.log('解説エラー');
-                return false
+                // エラーメッセージ
+                this.$store.dispatch('message/ADD_MESSAGES', {
+                    content: "解説エラー",
+                    color: "red",
+                    timeout: "3000"
+                });
+                this.validation_flag = false;
             }
-
-            return true;
-
+            return this.validation_flag;
         },
         /**
          * 選択された牌チェック
@@ -512,8 +533,6 @@ export default {
             if (!this.validation_check()) {
                 return false;
             }
-
-            // return false
 
             const post_data = {
                 tiles_id_list: sort_tiles_id_list,
